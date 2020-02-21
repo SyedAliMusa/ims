@@ -1,119 +1,123 @@
-@extends('layouts.app')
 
+@extends('layouts.customer.app')
+
+@section("title")
+    Register
+@endsection
+@push("css")
+    {{--include internal css--}}
+@endpush
 @section('content')
-<div class="container">
+    <div class="m-grid__item m-grid__item--fluid m-wrapper">
 
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <div class="text-center">
-                        <h3>Create a new account</h3>
-                        <p class="text-muted">Get our 30-day free trial and start increasing your sales today</p>
-                    </div>
-                    <hr class="mb-4">
-                    <form method="GET" action="{{ route('login.shopify') }}" aria-label="{{ __('Register') }}">
-                        <div class="form-group">
-                            <label for="domain">Domain</label>
-
-                            <div class="input-group mb-3">
-                                <input id="domain" type="text" class="form-control{{ $errors->has('domain') ? ' is-invalid' : '' }}" name="domain" value="{{ old('domain') }}" placeholder="yourshop" aria-describedby="myshopify" required autofocus>
-                                <div class="input-group-append">
-                                    <span class="input-group-text" id="myshopify">myshopify.com</span>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary btn-block">Continue</button>
-                        </div>
-                    </form>
+        <!-- BEGIN: Subheader -->
+        <div class="m-subheader ">
+            <div class="d-flex align-items-center">
+                <div class="mr-auto">
+                    <h3 class="m-subheader__title ">Account Registration</h3>
+                </div>
+                <div>
+                    <span class="m-subheader__daterange" id="m_dashboard_daterangepicker">
+                        <span class="m-subheader__daterange-label">
+										<span class="m-subheader__daterange-title"></span>
+										<span class="m-subheader__daterange-date m--font-brand"></span>
+                        </span>
+                        <a href="#" class="btn btn-sm btn-brand m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill">
+										<i class="la la-angle-down"></i>
+                        </a>
+                    </span>
                 </div>
             </div>
-
-            <div class="text-center mt-3">
-                <p class="text-center text-muted">Already have an account? <a href="{{ route('login') }}">Sign in here</a></p>
-            </div>
         </div>
-    </div>
+        <div class="m-content">
+            <div class="m-portlet m-portlet--mobile">
+                <div class="m-portlet__body">
 
-    <div class="row justify-content-center" hidden>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+                    <div class="row">
+                        <div class="col-md-4 offset-4">
+                            <form class="form-horizontal" method="POST" action="{{ route('register') }}">
+                                {{ csrf_field() }}
 
-                <div class="card-body">
-
-                    {{--<div class="row">--}}
-                        {{--<div class="col-md-4">--}}
-                            {{--<div class="card socialite-card shopify">--}}
-                                {{--<div class="card-body">Shopify</div>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-
-                    <form method="POST" action="{{ route('register') }}" aria-label="{{ __('Register') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
-
-                                @if ($errors->has('name'))
-                                    <span class="invalid-feedback" role="alert">
+                                <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                                    <label for="name" class=" control-label">Name</label>
+                                    <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
+                                    @if ($errors->has('name'))
+                                        <span class="help-block">
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span>
-                                @endif
-                            </div>
-                        </div>
+                                    @endif
+                                </div>
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                    <label for="email" class="control-label">E-Mail Address</label>
+                                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
+                                    @if ($errors->has('email'))
+                                        <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
-                                @endif
-                            </div>
-                        </div>
+                                    @endif
+                                </div>
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                                <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                                    <label for="password" class=" control-label">Password</label>
+                                    <input id="password" type="password" class="form-control" name="password" required>
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback" role="alert">
+                                    @if ($errors->has('password'))
+                                        <span class="help-block">
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
-                                @endif
-                            </div>
-                        </div>
+                                    @endif
+                                </div>
 
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+                                <div class="form-group">
+                                    <label for="password-confirm" class=" control-label">Confirm Password</label>
+                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                                </div>
 
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
+                                <div class="form-group">
+                                    <label for="password-confirm" class=" control-label">Select Account Type</label>
+                                    <select class="form-control" name="account_type" required>
+                                        <option value="" selected>Select Account Type</option>
+                                        <option value="admin">Admin Account</option>
+                                        <option value="inventory">Inventory Account</option>
+                                        <option value="tester">Tester Account</option>
+                                        {{--<option value="cutting">Cutting</option>--}}
+                                        {{--<option value="cleaning">Cleaning</option>--}}
+                                        {{--<option value="glass_fitting">Glass Fitting</option>--}}
+                                        <option value="refurbishing">Phone Refurbishing</option>
+                                        <option value="lcd_refurbishing">LCD Refurbishing</option>
+                                    </select>
+                                </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">
+                                        Register
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
+
+
+
                 </div>
             </div>
+
+            <!-- END EXAMPLE TABLE PORTLET-->
         </div>
+        <div class="m-alert m-alert--icon m-alert--air m-alert--square alert alert-dismissible m--margin-bottom-30" role="alert">
+            <div class="m-alert__icon">
+                <i class="flaticon-exclamation m--font-brand"></i>
+            </div>
+            <div class="m-alert__text">
+                DataTables is a plug-in for the jQuery Javascript library. It is a highly flexible tool, based upon the foundations of progressive enhancement, and will add advanced interaction controls to any HTML table.
+                For more info see
+            </div>
+        </div>
+
     </div>
-</div>
-@endsection
+@stop
+@push('scripts')
+
+@endpush

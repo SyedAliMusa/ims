@@ -22,7 +22,7 @@ return [
     'ses' => [
         'key' => env('SES_KEY'),
         'secret' => env('SES_SECRET'),
-        'region' => env('SES_REGION', 'us-east-1'),
+        'region' => 'us-east-1',
     ],
 
     'sparkpost' => [
@@ -33,12 +33,6 @@ return [
         'model' => App\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
-    ],
-
-    'shopify' => [
-        'client_id' => env('SHOPIFY_KEY'),
-        'client_secret' => env('SHOPIFY_SECRET'),
-        'redirect' => env('SHOPIFY_REDIRECT'),
     ],
 
 ];
