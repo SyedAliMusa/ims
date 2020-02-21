@@ -1,0 +1,16 @@
+[05-Aug-2018 09:37:08 UTC] PHP Fatal error:  Class 'App\Models\Remarks' not found in /home/legharis/ims/app/Http/Controllers/TestingController.php on line 52
+[07-Aug-2018 16:44:17 UTC] PHP Parse error:  syntax error, unexpected 'where' (T_STRING) in /home/legharis/ims/app/Http/Controllers/LotEntryController.php on line 38
+[04-Sep-2018 16:17:23 UTC] PHP Fatal error:  Class 'Date' not found in /home/legharis/ims/storage/framework/views/21096d0d6968bcd74f95a611f68fc981a2513bd7.php on line 105
+[04-Sep-2018 16:17:32 UTC] PHP Fatal error:  Class 'Date' not found in /home/legharis/ims/storage/framework/views/21096d0d6968bcd74f95a611f68fc981a2513bd7.php on line 105
+[04-Sep-2018 16:18:03 UTC] PHP Fatal error:  Class 'Date' not found in /home/legharis/ims/storage/framework/views/21096d0d6968bcd74f95a611f68fc981a2513bd7.php on line 105
+[04-Sep-2018 16:18:28 UTC] PHP Fatal error:  Class 'Date' not found in /home/legharis/ims/storage/framework/views/21096d0d6968bcd74f95a611f68fc981a2513bd7.php on line 105
+[04-Sep-2018 16:19:15 UTC] PHP Fatal error:  Class 'Date' not found in /home/legharis/ims/storage/framework/views/21096d0d6968bcd74f95a611f68fc981a2513bd7.php on line 105
+[04-Sep-2018 16:20:21 UTC] PHP Fatal error:  Class 'Date' not found in /home/legharis/ims/storage/framework/views/21096d0d6968bcd74f95a611f68fc981a2513bd7.php on line 107
+[04-Sep-2018 16:20:50 UTC] PHP Fatal error:  Class 'Date' not found in /home/legharis/ims/storage/framework/views/21096d0d6968bcd74f95a611f68fc981a2513bd7.php on line 92
+[04-Sep-2018 16:24:40 UTC] PHP Fatal error:  Class 'Date' not found in /home/legharis/ims/storage/framework/views/21096d0d6968bcd74f95a611f68fc981a2513bd7.php on line 58
+[15-Dec-2018 11:26:42 America/New_York] PHP Warning:  require(/home2/cellgall/ims.cellgalleryonline.com/public/bootstrap/autoload.php): failed to open stream: No such file or directory in /home2/cellgall/ims.cellgalleryonline.com/public/index.php on line 22
+[15-Dec-2018 11:26:42 America/New_York] PHP Warning:  require(/home2/cellgall/ims.cellgalleryonline.com/public/bootstrap/autoload.php): failed to open stream: No such file or directory in /home2/cellgall/ims.cellgalleryonline.com/public/index.php on line 22
+[15-Dec-2018 11:26:42 America/New_York] PHP Fatal error:  require(): Failed opening required '/home2/cellgall/ims.cellgalleryonline.com/public/bootstrap/autoload.php' (include_path='.:/opt/cpanel/ea-php56/root/usr/share/pear') in /home2/cellgall/ims.cellgalleryonline.com/public/index.php on line 22
+[15-Dec-2018 11:27:48 America/New_York] PHP Warning:  require(/home2/cellgall/ims.cellgalleryonline.com/../bootstrap/autoload.php): failed to open stream: No such file or directory in /home2/cellgall/ims.cellgalleryonline.com/index.php on line 22
+[15-Dec-2018 11:27:48 America/New_York] PHP Warning:  require(/home2/cellgall/ims.cellgalleryonline.com/../bootstrap/autoload.php): failed to open stream: No such file or directory in /home2/cellgall/ims.cellgalleryonline.com/index.php on line 22
+[15-Dec-2018 11:27:48 America/New_York] PHP Fatal error:  require(): Failed opening required '/home2/cellgall/ims.cellgalleryonline.com/../bootstrap/autoload.php' (include_path='.:/opt/cpanel/ea-php56/root/usr/share/pear') in /home2/cellgall/ims.cellgalleryonline.com/index.php on line 22
