@@ -160,18 +160,20 @@ class TestingController extends Controller
                                 INNER JOIN categories ct on ct.id = i.category_id INNER JOIN categories ctt ON ctt.id = t.category_id_old 
                                 WHERE t.inventory_id = :inv order by t.id DESC '), ['inv' => $testing_inv_id]);
 
-        $return = DB::select(DB::raw('select * from returns where inventory_id = :inv'), ['inv' => $testing_inv_id]);
+        $return = DB::select(DB::raw('select r.*,u.name from returns r inner join 
+                                      users u on u.id = r.created_by where inventory_id = :inv'), ['inv' => $testing_inv_id]);
 //        $return = Returns::where('inventory_id','=',$testing_inv_id)->select('id')->orderByDesc('id')->first();
-//print_r($testing_ids);die;
+//print_r($return);die;
         if ($return){
             foreach ($return as $k => $v) {
               /*  $data['return_message'][] = $v->message;
                 $data['return_date'][] = $v->created_at;*/
-                $data[] =[
+                $data = $return;/*[
                     'return_message' => $v->message,
                     'return_date' => $v->created_at,
                     'testing_id' => $v->testing_id,
-                ];
+                    'return_data' => $return,
+                ];*/
             }
             /*$data =[
                 'return_message' => $return->message,
@@ -181,7 +183,7 @@ class TestingController extends Controller
         else{
             $data = 0;
         }
-//print_r($data[0]);die;
+//print_r($data[0]->name);die;
         return view('customer.testing.problem_updated',compact('testing_ids','data'));
     }
 

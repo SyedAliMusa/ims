@@ -89,17 +89,29 @@
                             <div class="row">
                                 @if ($data != 0)
                                     @foreach($data as $kk => $vv)
-                                        @if($testing->id == $vv['testing_id'])
-                                    <div class="col-md-3">
-                                        <div class="form-group margin-0">
+                                        @if($testing->id == $vv->testing_id)
+                                            <div class="col-md-3">
+                                                <div class="form-group margin-0">
+                                                    <label >Returned By</label>
+                                                    <b class="form-control m--font-bold">{{$vv->name}}</b>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group margin-0">
+                                                    <label class="">Returning Reason</label>
+                                                    <b class="form-control m--font-bold">{{$vv->message}}</b>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group margin-0">
+                                                    <label class="">Returned Category</label>
+                                                    <b class="form-control m--font-bold">{{$testing->old_cat}}</b>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group margin-0">
                                             <label >Returned Date</label>
-                                            <b class="form-control m--font-bold">{{date('M-d-Y', strtotime($vv['return_date']))}}</b>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <div class="form-group margin-0">
-                                            <label class="">Return Reason</label>
-                                            <b class="form-control m--font-bold">{{$vv['return_message']}}</b>
+                                            <b class="form-control m--font-bold">{{date('M-d-Y', strtotime($vv->created_at))}}</b>
                                         </div>
                                     </div>
                                         @endif
