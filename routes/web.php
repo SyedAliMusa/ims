@@ -103,10 +103,14 @@ Route::get("lcdInventoryReport", "ReportController@lcdInventoryReport")->name('r
 Route::match(['GET' , 'POST'],"refurbisherReport", "ReportController@refurbisherReport")->name('report.refurbisherReport');
 Route::match(['GET' , 'POST'],"refurbisherLcdReport", "ReportController@refurbisherLcdReport")->name('report.refurbisherLcdReport');
 
-//general routs
+//general routsget_asin_by_storage_rest
 Route::get('lot_by_lot_id/{lot_id?}','GeneralController@getLotByLotId')->name('lot_by_lot_id');
+Route::get('lot_by_lot_brand/{lot_id?}','GeneralController@getLotByLotIdBrand')->name('lot_by_lot_brand');
+Route::get('lot_by_lot_model/{lot_id?}','GeneralController@getLotByLotIdModel')->name('lot_by_lot_model');
 Route::get('get_storage_by_color/{lot_id?}','GeneralController@getStorageByColor')->name('get_storage_by_color');
 Route::get('get_asin_by_storage/{lot_id?}','GeneralController@getAsinByStorage')->name('get_asin_by_storage');
+Route::get('get_asin_by_storage_rest/{lot_id?}','GeneralController@getAsinByStorageRest')->name('get_asin_by_storage_rest');
+Route::get('get_asin_by_storage_qty/{lot_id?}','GeneralController@getAsinByStorageQty')->name('get_asin_by_storage_qty');
 Route::get('update_asin_quantity/{lot_id?}','GeneralController@updateAsinQuantity')->name('update_asin_quantity');
 Route::get('get_asin_quantity_by_asin/{lot_id?}','GeneralController@getAsinQuantityByAsin')->name('get_asin_quantity_by_asin');
 Route::get('lot_by_imei/{imei?}','GeneralController@getLotByImei')->name('lot_by_imei');

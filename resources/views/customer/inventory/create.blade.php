@@ -40,25 +40,37 @@
                             <div class="col-md-4 offset-1">
                                 <div class="form-group margin-0">
                                     <label for="usr">Brand</label>
-                                    <input type="text" class="form-control" disabled="" name="brand" value="" required>
+                                    <select class="form-control" name="brand" id="brand_id" onchange="getLotModel()"  required>
+                                        <option value="" selected></option>
+                                    </select>
+                                    {{--<input type="text" class="form-control" disabled="" name="brand" value="" required>--}}
                                 </div>
                                 <div class="form-group margin-0">
                                     <label for="pwd">Model</label>
-                                    <input type="text" class="form-control" disabled name="model"value="" required>
+                                    <select class="form-control" name="model" id="model_id" onchange="getLotNetwork()" required>
+                                        <option value="" selected></option>
+                                    </select>
+                                    {{--<input type="text" class="form-control" disabled name="model"value="" required>--}}
                                 </div>
                                 <div class="form-group margin-0">
                                     <label for="usr">Network</label>
+                                    {{--<select class="form-control" name="brand"  required>
+                                        <option value="" selected></option>
+                                    </select>--}}
                                     <input type="text" class="form-control"disabled name="network" id=""  value="" required>
                                 </div>
                                 <div class="form-group margin-0">
                                     <label for="pwd">ASIN</label>
+                                   {{-- <select class="form-control" name="brand"  required>
+                                        <option value="" selected></option>
+                                    </select>--}}
                                     <select class="form-control" name="asin" id="selected_asin" required onchange="getAsinQuantityByAsin()" >
                                         <option value="" selected></option>
                                     </select>
                                 </div>
                                 <div class="form-group margin-0">
                                     <label for="pwd">Quantity</label>
-                                    <input type="number" class="form-control" disabled  name="quantity" id=""  value="" required>
+                                    <input type="number" class="form-control" disabled  name="quantity" id="qty"  value="" required>
                                     <div class="update_asin_qty_when_zero hide">
                                         <label for="pwd">Add more quantity in same asin</label>
                                         <input type="number" class="form-control" name="updated_qty" value="" >
@@ -141,29 +153,87 @@
     <script src="{{asset('customer/assets/demo/default/custom/crud/forms/widgets/select2.js')}}" type="text/javascript"></script>
     <script>
 
-        function getLot(){
+        function getLot(){ // Get All Brands against this lot id
+            $('select[name=brand]').children('option:not(:first)').remove();
+            $('select[name=model]').children('option:not(:first)').remove();
+            $('select[name=asin]').children('option:not(:first)').remove();
+            $('select[name=color]').children('option:not(:first)').remove();
+            $('select[name=storage]').children('option:not(:first)').remove();
             $('input[name=quantity]').val('')
-            $('select[name=color]').html('<option value="" required></option>')
+            $('input[name=network]').val('')
 
             var lot_id = $('#m_select2_1').val();
             $.ajax({
                 type: "GET",
                 url: '{{route("lot_by_lot_id")}}/'+lot_id,
                 success: function (data) {
-                    $('input[name=brand]').val(data['brand'])
+                    $.each(data['brand'], function( index, value ) {
+                        console.log(value)
+                        $('select[name=brand]').append('<option value='+value+'>'+value+'</option>')
+                    });
+
+                   /* $('select[name=brand]').val(data['brand'])
                     $('input[name=model]').val(data['model'])
                     $('input[name=network]').val(data['network'])
                     $.each(data['lot'], function( index, value ) {
                         $('select[name=color]').append('<option value='+value.color+'>'+value.color+'</option>')
                         // $('select[name=storage]').append('<option value='+value.storage_id+'>'+value.storage+'</option>')
                         // $('select[name=asin]').append('<option value='+value.asin+'>'+value.asin+'</option>')
+                    });*/
+                }
+            })
+        }
+        function getLotModel(){
+            $('select[name=model]').children('option:not(:first)').remove();
+            $('select[name=asin]').children('option:not(:first)').remove();
+            $('select[name=color]').children('option:not(:first)').remove();
+            $('select[name=storage]').children('option:not(:first)').remove();
+            $('input[name=quantity]').val('')
+            $('input[name=network]').val('')
+
+            var lot_id = $('#m_select2_1').val()
+            var lot_brand = $('#brand_id').val()
+            console.log('Lot_id: '+lot_id+' Lot_brand: '+lot_brand)
+            $.ajax({
+                type: "GET",
+                url: '{{route("lot_by_lot_brand")}}/'+lot_id+'?lot_brand='+lot_brand,
+                success: function (data) {
+                    $.each(data['model'], function( index, value ) {
+                        console.log('Model'+value)
+                        $('select[name=model]').append('<option value='+value+'>'+value+'</option>')
+                    });
+
+                }
+            })
+        }
+
+        function getLotNetwork(){
+            $('select[name=asin]').children('option:not(:first)').remove();
+            $('select[name=color]').children('option:not(:first)').remove();
+            $('select[name=storage]').children('option:not(:first)').remove();
+            $('input[name=quantity]').val('')
+            $('input[name=network]').val('')
+            var lot_id = $('#m_select2_1').val()
+            var lot_brand = $('#brand_id').val()
+            var lot_model = $('#model_id').val()
+            $.ajax({
+                type: "GET",
+                url: '{{route("lot_by_lot_model")}}/'+lot_id+'?lot_brand='+lot_brand+'&lot_model='+lot_model,
+                success: function (data) {
+                        $('input[name=network]').val(data['network'])
+                    $.each(data['color'], function( index, value ) {
+                        $('select[name=color]').append('<option value='+value+'>'+value+'</option>')
+                        // $('select[name=storage]').append('<option value='+value.storage_id+'>'+value.storage+'</option>')
+                        // $('select[name=asin]').append('<option value='+value.asin+'>'+value.asin+'</option>')
                     });
                 }
             })
         }
+
         function getStorageByColor(){
+            $('select[name=asin]').children('option:not(:first)').remove();
+            $('select[name=storage]').children('option:not(:first)').remove();
             $('input[name=quantity]').val('')
-            $('select[name=storage]').html('<option value="" required></option>')
 
             var lot_id = $('#m_select2_1').val();
             var color = $('select[name=color]').val();
@@ -177,20 +247,23 @@
                 }
             })
         }
+
+
         function getAsinByStorage(){
+            $('select[name=asin]').children('option:not(:first)').remove();
             $('input[name=quantity]').val('')
-            $('select[name=asin]').html('<option value="" required></option>')
 
             var lot_id = $('#m_select2_1').val();
             var color = $('select[name=color]').val();
             var storage_id = $('select[name=storage]').val();
-            console.log(color + storage_id)
+            var lot_brand = $('#brand_id').val()
+            console.log(color + storage_id + lot_brand)
 
             $.ajax({
                 type: "GET",
-                url: '{{route("get_asin_by_storage")}}/'+lot_id+'?color='+color+'&storage_id='+storage_id,
+                url: '{{route("get_asin_by_storage_rest")}}/'+lot_id+'?color='+color+'&storage_id='+storage_id+'&lot_brand='+lot_brand,
                 success: function (data) {
-                    $.each(data, function( index, value ) {
+                    $.each(data['asin'], function( index, value ) {
                         $('select[name=asin]').append('<option value='+value.asin+'>'+value.asin+'</option>')
                     });
                 }
@@ -200,22 +273,23 @@
         function getAsinQuantityByAsin(){
             $('input[name=quantity]').val('')
 
-            var lot_id = $('#m_select2_1').val();
-            var color = $('select[name=color]').val();
-            var storage_id = $('select[name=storage]').val();
-            var asin = $('select[name=asin]').val();
+            var lot_id = $('#m_select2_1').val()
+            var color = $('select[name=color]').val()
+            var storage_id = $('select[name=storage]').val()
+            var asin = $('select[name=asin]').val()
+            var brand = $('select[name=brand]').val()
+            var model = $('select[name=model]').val()
             console.log(color + storage_id)
 
             $.ajax({
                 type: "GET",
-                url: '{{route("get_asin_by_storage")}}/'+lot_id+'?color='+color+'&storage_id='+storage_id+'&asin='+asin,
+                url: '{{route("get_asin_by_storage_qty")}}/'+lot_id+'?color='+color+'&storage_id='+storage_id+'&asin='+asin+'&model='+model+'&brand='+brand,
                 success: function (data) {
                     console.log(data+ 'working')
-                    $.each(data, function( index, value ) {
-                        $('input[name=quantity]').val(value.asin_total_quantity - value.inventory_quantity)
+                    $.each(data['storage'], function( index, value ) {
+                        $('input[name=quantity]').val(value.asin_total_quantity)
                         if($('input[name=quantity]').val() == 0){
                             $('.update_asin_qty_when_zero').removeClass('hide')
-
                         }
                     });
                 }
@@ -265,7 +339,7 @@
             e.preventDefault();
             var less_than = $('input[name=imei]').val();
             if(less_than.length < 14){
-                alert('you entered less than 14 numbers ')
+                alert('Entered IMEI less than 14 numbers ')
                 return false
             }
             else {

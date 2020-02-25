@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="form-group margin-0">
                                     <label for="usr">Brand</label>
-                                    <select class="form-control" name="brand" id="sel1" required>
+                                    <select class="form-control" id="m_select2_1" name="brand"  required>
                                         <option value="" selected></option>
                                         @foreach($brands as $brand)
                                             <option value="{{$brand->id}}">{{$brand->name}}</option>
@@ -54,7 +54,7 @@
                                 </div>
                                 <div class="form-group margin-0">
                                     <label for="usr">Network</label>
-                                    <select class="form-control" name="network" id="sel1" required>
+                                    <select class="form-control" name="network" id="m_select2_2" required>
                                         <option value="" selected></option>
                                         @foreach($networks as $brand)
                                             <option value="{{$brand->id}}">{{$brand->name}}</option>
@@ -125,6 +125,7 @@
     </div>
 @stop
 @push('scripts')
+    <script src="{{asset('customer/assets/demo/default/custom/crud/forms/widgets/select2.js')}}" type="text/javascript"></script>
     <script>
         $(document).ready(function() {
             $("input[name=color]").on('change, keyup', function() {

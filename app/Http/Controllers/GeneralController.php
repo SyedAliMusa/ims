@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Brand;
 use App\Category;
 use App\Dispatch;
 use App\Inventory;
@@ -22,14 +23,61 @@ class GeneralController extends Controller
         date_default_timezone_set("America/New_York");
     }
     public function getLotByLotId(Request $request, $lot_id){
-        $data = Lot::where('lot_id','=', $lot_id)->select('color')->groupBy('color')->get();
-        $lot = Lot::where('lot_id','=', $lot_id)->first();
+
+
+        $lot = Lot::where('lot_id','=', $lot_id)->select('brand_id')->distinct()->get(['brand_id']);
+        $brand = array();
+        foreach ($lot as $item => $val) {
+            array_push($brand, $val->brand->name);
+        }
+//        print_r($lot);die;
+        return $data = [
+            'brand' => $brand,
+        ];
+
+        /*$data = Lot::where('lot_id','=', $lot_id)->select('color')->groupBy('color')->get();
+
+        $lot = Lot::where('lot_id','=', $lot_id)->get();
+        foreach ($lot as $key => $value){
+            echo $value->id;
+        }
+        print_r($lot[0]);die;
 
         return $data = [
             'lot' => $data,
             'model' => $lot->model,
             'brand' => $lot->brand->name,
             'network' => $lot->network->name,
+        ];*/
+    }
+    public function getLotByLotIdBrand(Request $request, $lot_id){
+        $brand_id = Brand::where('name','=',$request->get('lot_brand'))->first();
+        $mo = Lot::where('lot_id','=', $lot_id)->
+        where('brand_id','=',$brand_id->id)->select('model')->distinct()->get(['model']);
+        $models = array();
+        foreach ($mo as $item => $val) {
+            array_push($models, $val['model']);
+        }
+//        print_r($lot);die;
+        return $data = [
+            'model' => $models,
+        ];
+    }
+
+    public function getLotByLotIdModel(Request $request, $lot_id){
+        $brand_id = Brand::where('name','=',$request->get('lot_brand'))->first();
+        $mo = Lot::where('lot_id','=', $lot_id)->join('networks','networks.id','=','lots.network_id')->
+                    where('brand_id','=',$brand_id->id)->
+                    where('model','=',$request->get('lot_model'))->select('networks.name')->first();
+        $color = Lot::where('lot_id','=', $lot_id)->where('brand_id','=',$brand_id->id)->
+                        where('model','=',$request->get('lot_model'))->select('color')->get();
+        $c = array();
+        foreach ($color as $item => $value) {
+            array_push($c,$value['color']);
+        }
+        return $data = [
+            'network' => $mo['name'],
+            'color' => $c,
         ];
     }
     public function getStorageByColor(Request $request, $lot_id){
@@ -39,9 +87,30 @@ class GeneralController extends Controller
             ->select('storages.*')->groupBy('storage_id')->get();
     }
     public function getAsinByStorage(Request $request, $lot_id){
+        $brand_id = Brand::where('name','=',$request->get('lot_brand'))->first();
         return $data = Lot::where('lot_id','=', $lot_id)
             ->where('color','=', $request->get('color'))
-            ->where('storage_id','=', $request->get('storage_id'))->get();
+            ->where('storage_id','=', $request->get('storage_id'))
+            ->where('brand_id','=', $brand_id->id)->get();
+    }
+    public function getAsinByStorageRest(Request $request, $lot_id){
+
+        $brand_id = Brand::where('name','=',$request->get('lot_brand'))->first();
+        $data = DB::select(DB::raw('select asin from lots where color = :color AND storage_id = :storage AND brand_id = :brand AND lot_id = :lot')
+                                    ,['color' => $request->get('color'), 'storage' => $request->get('storage_id'), 'brand' => $brand_id->id, 'lot' => $lot_id]);
+
+        return $data = ['asin' => $data];
+
+    }
+    public function getAsinByStorageQty(Request $request, $lot_id){
+
+        $brand_id = Brand::where('name','=',$request->get('brand'))->first();
+        $data = DB::select(DB::raw('select asin_total_quantity from lots where color = :color AND storage_id = :storage AND brand_id = :brand AND lot_id = :lot
+                                    AND asin = :asin AND model = :model'),['color' => $request->get('color'), 'storage' => $request->get('storage_id'),
+                                    'brand' => $brand_id->id, 'lot' => $lot_id,'asin' => $request->get('asin'), 'model' => $request->get('model')]);
+
+        return $data = ['storage' => $data];
+
     }
     public function getAsinQuantityByAsin(Request $request, $lot_id){
         return $data = Lot::where('lot_id','=', $lot_id)
