@@ -126,6 +126,7 @@ Route::get('lot_by_brand_plus_model_color_storage','GeneralController@lot_by_bra
 Route::get('lot_asin_by_brand_plus_model_color_storage','GeneralController@lot_asin_by_brand_plus_model_color_storage')->name('lot_asin_by_brand_plus_model_color_storage');
 Route::get('get_asin_by__','GeneralController@get_asin_by__')->name('get_asin_by__');
 Route::get('get_imei_category','GeneralController@get_imei_category')->name('get_imei_category');
+Route::get('get_models_for_lots/{brand_name?}','GeneralController@getModelsByBrand')->name('get_models_for_lots');
 //for reports only
 Route::get('model_by_brand','GeneralController@getModelByBrand')->name('model_by_brand');
 Route::get('lot_by_brand_plus_model','GeneralController@getLotByBrandPlusModel')->name('lot_by_brand_plus_model');

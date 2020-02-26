@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="form-group margin-0">
                                     <label for="usr">Brand</label>
-                                    <select class="form-control" id="m_select2_1" name="brand"  required>
+                                    <select class="form-control" id="m_select2_1" name="brand" onchange="getModels()" required>
                                         <option value="" selected></option>
                                         @foreach($brands as $brand)
                                             <option value="{{$brand->id}}">{{$brand->name}}</option>
@@ -50,7 +50,10 @@
                                 </div>
                                 <div class="form-group margin-0">
                                     <label for="pwd">Model</label>
-                                    <input type="text" class="form-control" name="model" id="" value="" oninput="this.value=this.value.replace(/[^0-9a-zA-Z-_]/g,'');" required>
+                                    <select class="form-control" id="m_select2_3" name="models"  required>
+                                        <option value="" selected></option>
+                                    {{--<input type="text" class="form-control" name="model" id="" value="" oninput="this.value=this.value.replace(/[^0-9a-zA-Z-_]/g,'');" required>--}}
+                                    </select>
                                 </div>
                                 <div class="form-group margin-0">
                                     <label for="usr">Network</label>
@@ -184,6 +187,21 @@
             })
 
         } );
+
+        function getModels(){
+            var brand = $('select[name=brand]').val()
+            $.ajax({
+                type: "GET",
+                url: '{{route("get_models_for_lots")}}/'+brand+'?',
+                success: function (data) {
+                    $.each(data['model'], function( index, value ) {
+                        console.log('Model'+value.name)
+                        $('select[name=models]').append('<option value='+value.name+'>'+value.name+'</option>')
+                    });
+
+                }
+            })
+        }
 
         $('form#lot_insert_form').on('submit', function(e) {
             e.preventDefault();

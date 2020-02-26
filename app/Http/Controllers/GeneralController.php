@@ -118,6 +118,10 @@ class GeneralController extends Controller
             ->where('storage_id','=', $request->get('storage_id'))
             ->where('asin','=', $request->get('asin'))->first();
     }
+    public function getModelsByBrand(Request $request, $brand_id){
+        $data = DB::select(DB::raw('SELECT name from models where brand_id = :brand'),['brand' => $brand_id]);
+        return $data = ['model' => $data, ];
+    }
     public function getLotByImeiTest(Request $request, $imei){
 
         $inventory = Inventory::join('warehouse_in_out','inventories.id','=','warehouse_in_out.inventory_id')
