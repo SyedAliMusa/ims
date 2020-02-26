@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="form-group margin-0">
                                     <label for="pwd">Model</label>
-                                    <select class="form-control" id="m_select2_3" name="models"  required>
+                                    <select class="form-control" id="m_select2_3" name="model"  required>
                                         <option value="" selected></option>
                                     {{--<input type="text" class="form-control" name="model" id="" value="" oninput="this.value=this.value.replace(/[^0-9a-zA-Z-_]/g,'');" required>--}}
                                     </select>
@@ -189,6 +189,7 @@
         } );
 
         function getModels(){
+            $('select[name=model]').children('option:not(:first)').remove();
             var brand = $('select[name=brand]').val()
             $.ajax({
                 type: "GET",
@@ -196,7 +197,7 @@
                 success: function (data) {
                     $.each(data['model'], function( index, value ) {
                         console.log('Model'+value.name)
-                        $('select[name=models]').append('<option value='+value.name+'>'+value.name+'</option>')
+                        $('select[name=model]').append('<option value='+value.name+'>'+value.name+'</option>')
                     });
 
                 }
@@ -232,7 +233,7 @@
                         lot_id: $('input[name=lot_id]').val(),
                         brand: $('select[name=brand]').val(),
                         network: $('select[name=network]').val(),
-                        model: $('input[name=model]').val(),
+                        model: $('select[name=model]').val(),
                         color: $('input[name=color]').val(),
                         storage: $('select[name=storage]').val(),
                         quantity: $('input[name=quantity]').val(),

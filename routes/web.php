@@ -53,6 +53,7 @@ Route::resource("repairing", "RepairingController");
 Route::resource("returns", "ReturnController");
 Route::resource("user", "UserController");
 Route::resource("network", "NetworkController");
+Route::resource("models", "ModelsController");
 Route::resource("store", "StoreController");
 Route::resource("brand", "BrandController");
 Route::resource("cataloge", "CatalogeController");

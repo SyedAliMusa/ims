@@ -32,6 +32,9 @@
                                     @if(\App\UserPermissions::where('u_id','=', Auth::user()->id)->where('p_id','=', 6)->first())
                                         <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('stock-adjustment.index')}}" class="m-menu__link "><span class="m-menu__link-text">Stock Adjustment </span></a></li>
                                     @endif
+                                    @if(\App\UserPermissions::where('u_id','=', Auth::user()->id)->where('p_id','=', 5)->first())
+                                        <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('models.index')}}" class="m-menu__link "><span class="m-menu__link-text">Models</span></a></li>
+                                    @endif
                                 </ul>
                             </div>
                         </li>
