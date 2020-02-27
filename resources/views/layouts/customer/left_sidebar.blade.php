@@ -124,7 +124,7 @@
                                         class="m-menu__link-text">Phone Warehouse</span><i class="m-menu__hor-arrow la la-angle-right"></i><i class="m-menu__ver-arrow la la-angle-right"></i></a>
                             <div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--right"><span class="m-menu__arrow "></span>
                                 <ul class="m-menu__subnav">
-                                    <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('warehouse.index')}}" class="m-menu__link "><span class="m-menu__link-text">Warehouse Items</span></a></li>
+                                    <!--<li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('warehouse.index')}}" class="m-menu__link "><span class="m-menu__link-text">Warehouse Items</span></a></li>-->
                                     <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('warehouse_in_out')}}?release=true" class="m-menu__link "><span class="m-menu__link-text">Release </span></a></li>
                                     <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('warehouse_in_out')}}" class="m-menu__link "><span class="m-menu__link-text">Receive </span></a></li>
                                     <!--<li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('Search-Unlock-Codes')}}" class="m-menu__link "><span class="m-menu__link-text">Search Unlock Codes </span></a></li>-->

@@ -32,33 +32,17 @@ class WareHouseController extends Controller
      
     public function index(Request $request)
     {
-        $products = DB::table('warehouse_in_out')
-                    ->join('inventories','warehouse_in_out.inventory_id', '=', 'inventories.id')
-                    ->where('status','=',1)
-                    ->where('inventories.id','<>','warehouse_in_out.inventory_id')
-                    ->orderByDesc('inventories.id')
-                    ->simplePaginate(20);
-//        print_r($products);die;
-        /*$products = Inventory::leftJoin('warehouse_in_out','inventories.id','=','warehouse_in_out.inventory_id')
+        $products = Inventory::leftJoin('warehouse_in_out','inventories.id','=','warehouse_in_out.inventory_id')
             ->where('status','=',1)
             ->where('inventories.id','<>','warehouse_in_out.inventory_id')
             ->orderByDesc('inventories.id')
             ->simplePaginate(20);
-print_r($products);die;
+
         $products->total = Inventory::leftJoin('warehouse_in_out','inventories.id','=','warehouse_in_out.inventory_id')
             ->where('status','=',1)
             ->where('inventories.id','<>','warehouse_in_out.inventory_id')
-            ->get()->count();*/
-
-        $products->total = DB::table('warehouse_in_out')
-                            ->leftjoin('inventories','warehouse_in_out.inventory_id', '=', 'inventories.id')
-                            ->where('status','=',1)
-                            ->where('inventories.id','<>','warehouse_in_out.inventory_id')
-                            ->get()->count();
-        foreach($products as $product => $val) {
-            print_r($val);die;
-        }
-print_r($products->lot->asin);die;
+            ->get()->count();
+        
         return view('customer.warehouse.index',compact('products'));
     }
 
