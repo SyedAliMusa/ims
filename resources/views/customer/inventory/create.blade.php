@@ -161,9 +161,12 @@
             $('select[name=asin]').children('option:not(:first)').remove();
             $('select[name=color]').children('option:not(:first)').remove();
             $('select[name=storage]').children('option:not(:first)').remove();
-            // $('select[name=network]').children('option:not(:first)').remove()
-            $('input[name=quantity]').val('')
+            $('select[name=network]').children('option:not(:first)').remove()
+            $('select[name=network]').hide()
+            $('input[name=network]').show()
             $('input[name=network]').val('')
+            $('input[name=quantity]').val('')
+
 
             var lot_id = $('#m_select2_1').val();
             $.ajax({
@@ -191,9 +194,11 @@
             $('select[name=asin]').children('option:not(:first)').remove();
             $('select[name=color]').children('option:not(:first)').remove();
             $('select[name=storage]').children('option:not(:first)').remove();
-            // $('select[name=network]').children('option:not(:first)').remove()
-            $('input[name=quantity]').val('')
+            $('select[name=network]').children('option:not(:first)').remove()
+            $('select[name=network]').hide()
+            $('input[name=network]').show()
             $('input[name=network]').val('')
+            $('input[name=quantity]').val('')
 
             var lot_id = $('#m_select2_1').val()
             var lot_brand = $('#brand_id').val()
@@ -215,9 +220,12 @@
             $('select[name=asin]').children('option:not(:first)').remove();
             $('select[name=color]').children('option:not(:first)').remove();
             $('select[name=storage]').children('option:not(:first)').remove();
-            // $('select[name=network]').children('option:not(:first)').remove()
-            $('input[name=quantity]').val('')
+            $('select[name=network]').children('option:not(:first)').remove()
+            $('select[name=network]').hide()
+            $('input[name=network]').show()
             $('input[name=network]').val('')
+            $('input[name=quantity]').val('')
+
             var lot_id = $('#m_select2_1').val()
             var lot_brand = $('#brand_id').val()
             var lot_model = $('#model_id').val()
@@ -237,10 +245,12 @@
 
         function getStorageByColor(){
             $('select[name=asin]').children('option:not(:first)').remove()
-            // $('select[name=network]').children('option:not(:first)').remove()
             $('select[name=storage]').children('option:not(:first)').remove()
-            $('input[name=quantity]').val('')
+            $('select[name=network]').children('option:not(:first)').remove()
+            $('select[name=network]').hide()
+            $('input[name=network]').show()
             $('input[name=network]').val('')
+            $('input[name=quantity]').val('')
 
             var lot_id = $('#m_select2_1').val()
             var color = $('select[name=color]').val()
@@ -250,8 +260,9 @@
                 type: "get",
                 url: '{{route("get_storage_by_color")}}/'+lot_id+'?color='+color+'&model='+model+'&brand='+brand,
                 success: function (data) {
+
                     if (data['network'] != null) {
-                        $('input[name=network]').val(data['networks'])
+                        $('input[name=network]').val(data['network'])
                     } else {
                         $("input[name=network]").hide()
                         $("select[name=network]").show()
