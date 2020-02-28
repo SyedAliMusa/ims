@@ -57,7 +57,7 @@
                                     <select class="form-control" name="network"  required>
                                         <option value="" selected></option>
                                     </select>
-                                    {{--<input type="text" class="form-control"disabled name="network" id=""  value="" required>--}}
+                                    <input type="text" class="form-control"disabled name="network" id=""  value="" required>
                                 </div>
                                 <div class="form-group margin-0">
                                     <label for="pwd">ASIN</label>
@@ -152,14 +152,16 @@
 @push('scripts')
     <script src="{{asset('customer/assets/demo/default/custom/crud/forms/widgets/select2.js')}}" type="text/javascript"></script>
     <script>
-
+        $(document).ready(function() {
+            $("select[name=network]").hide()
+        });
         function getLot(){ // Get All Brands against this lot id
             $('select[name=brand]').children('option:not(:first)').remove();
             $('select[name=model]').children('option:not(:first)').remove();
             $('select[name=asin]').children('option:not(:first)').remove();
             $('select[name=color]').children('option:not(:first)').remove();
             $('select[name=storage]').children('option:not(:first)').remove();
-            $('select[name=network]').children('option:not(:first)').remove()
+            // $('select[name=network]').children('option:not(:first)').remove()
             $('input[name=quantity]').val('')
             $('input[name=network]').val('')
 
@@ -189,7 +191,7 @@
             $('select[name=asin]').children('option:not(:first)').remove();
             $('select[name=color]').children('option:not(:first)').remove();
             $('select[name=storage]').children('option:not(:first)').remove();
-            $('select[name=network]').children('option:not(:first)').remove()
+            // $('select[name=network]').children('option:not(:first)').remove()
             $('input[name=quantity]').val('')
             $('input[name=network]').val('')
 
@@ -213,7 +215,7 @@
             $('select[name=asin]').children('option:not(:first)').remove();
             $('select[name=color]').children('option:not(:first)').remove();
             $('select[name=storage]').children('option:not(:first)').remove();
-            $('select[name=network]').children('option:not(:first)').remove()
+            // $('select[name=network]').children('option:not(:first)').remove()
             $('input[name=quantity]').val('')
             $('input[name=network]').val('')
             var lot_id = $('#m_select2_1').val()
@@ -235,23 +237,35 @@
 
         function getStorageByColor(){
             $('select[name=asin]').children('option:not(:first)').remove()
-            $('select[name=network]').children('option:not(:first)').remove()
+            // $('select[name=network]').children('option:not(:first)').remove()
             $('select[name=storage]').children('option:not(:first)').remove()
             $('input[name=quantity]').val('')
+            $('input[name=network]').val('')
 
             var lot_id = $('#m_select2_1').val()
             var color = $('select[name=color]').val()
             var model = $('select[name=model]').val()
+            var brand = $('select[name=brand]').val()
             $.ajax({
                 type: "get",
-                url: '{{route("get_storage_by_color")}}/'+lot_id+'?color='+color+'&model='+model,
+                url: '{{route("get_storage_by_color")}}/'+lot_id+'?color='+color+'&model='+model+'&brand='+brand,
                 success: function (data) {
+                    if (data['network'] != null) {
+                        $('input[name=network]').val(data['networks'])
+                    } else {
+                        $("input[name=network]").hide()
+                        $("select[name=network]").show()
+                        $.each(data['networks'], function( index, value ) {
+                            $('select[name=network]').append('<option value='+value+'>'+value+'</option>')
+                        });
+                    }
+
                     $.each(data['storage'], function( index, value ) {
                         $('select[name=storage]').append('<option value='+value.id+'>'+value.name+'</option>')
                     });
-                    $.each(data['networks'], function( index, value ) {
-                        $('select[name=network]').append('<option value='+value.name+'>'+value.name+'</option>')
-                    });
+                    // $.each(data['networks'], function( index, value ) {
+                    //     $('select[name=network]').append('<option value='+value.name+'>'+value.name+'</option>')
+                    // });
                 }
             })
         }

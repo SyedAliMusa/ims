@@ -70,7 +70,7 @@ class GeneralController extends Controller
                     where('brand_id','=',$brand_id->id)->
                     where('model','=',$request->get('lot_model'))->select('networks.name')->first();
         $color = Lot::where('lot_id','=', $lot_id)->where('brand_id','=',$brand_id->id)->
-                        where('model','=',$request->get('lot_model'))->select('color')->get();
+                        where('model','=',$request->get('lot_model'))->select('color')->groupBy('color')->get();
         $c = array();
         foreach ($color as $item => $value) {
             array_push($c,$value['color']);
@@ -81,6 +81,7 @@ class GeneralController extends Controller
         ];
     }
     public function getStorageByColor(Request $request, $lot_id){
+        $brand_id = Brand::where('name','=',$request->get('brand'))->first();
         $storage = Lot::join('storages','lots.storage_id','=','storages.id')
             ->where('lot_id','=', $lot_id)
             ->where('color','=', $request->get('color'))
@@ -89,10 +90,18 @@ class GeneralController extends Controller
         $networks = Lot::join('networks','lots.network_id','=','networks.id')
             ->where('lot_id','=', $lot_id)
             ->where('color','=', $request->get('color'))
+            ->where('brand_id', '=', $brand_id['id'])
             ->where('model','=', $request->get('model'))
             ->select('networks.*')->groupBy('network_id')->get();
-
-        return $data = ['storage' => $storage, 'networks' => $networks];
+        $net = array();
+        foreach ($networks as $k => $v) {
+            array_push($net, $v->name);
+        }
+        if (count($net) < 2) {
+            return $data = ['storage' => $storage, 'network' => $net];
+        } else {
+            return $data = ['storage' => $storage, 'networks' => $net];
+        }
     }
     public function getAsinByStorage(Request $request, $lot_id){
         $brand_id = Brand::where('name','=',$request->get('lot_brand'))->first();
