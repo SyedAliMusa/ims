@@ -160,19 +160,17 @@
 
                 var brand =  $('select[name=brand] :selected').text();
                 var network =  $('select[name=network] :selected').text();
-                var model =  $('input[name=model]').val();
+                var model =  $('select[name=model]').val();
                 var color =  $('input[name=color]').val();
                 var storage =  $('select[name=storage]').val();
 
                 console.log(brand +' '+network +' '+model +' '+color +' '+storage )
 
-
                 $.ajax({
                     type: "GET",
                     url: '{{route("get_asin_by__")}}?brand_id='+brand+'&model='+model+'&color='+color+'&network_id='+network+'&storage_id='+storage,
                     success: function (data) {
-
-
+                        console.log(data)
                         if (data.length >0) {
                             $('#append').html(' <select class="form-control" name="asin" required></select>')
                             $.each(data, function (index, value) {

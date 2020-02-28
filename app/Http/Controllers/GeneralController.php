@@ -463,7 +463,7 @@ class GeneralController extends Controller
         $color = $request->get('color');
         $storage_id = $request->get('storage_id');
 
-        return $asins = Lot::join('networks','lots.network_id','=','networks.id')
+        $asins = Lot::join('networks','lots.network_id','=','networks.id')
             ->join('brands','lots.brand_id','=','brands.id')
             ->where('brands.name','=', $brand_id)
             ->where('networks.name','=', $network_id)
@@ -473,6 +473,7 @@ class GeneralController extends Controller
             ->groupBy('asin')
             ->select('asin')
             ->get();
+        return $asins;
     }
 
     public function get_imei_category(Request $request){
