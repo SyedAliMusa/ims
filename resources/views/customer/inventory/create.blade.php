@@ -54,10 +54,10 @@
                                 </div>
                                 <div class="form-group margin-0">
                                     <label for="usr">Network</label>
-                                    {{--<select class="form-control" name="brand"  required>
+                                    <select class="form-control" name="network"  required>
                                         <option value="" selected></option>
-                                    </select>--}}
-                                    <input type="text" class="form-control"disabled name="network" id=""  value="" required>
+                                    </select>
+                                    {{--<input type="text" class="form-control"disabled name="network" id=""  value="" required>--}}
                                 </div>
                                 <div class="form-group margin-0">
                                     <label for="pwd">ASIN</label>
@@ -159,6 +159,7 @@
             $('select[name=asin]').children('option:not(:first)').remove();
             $('select[name=color]').children('option:not(:first)').remove();
             $('select[name=storage]').children('option:not(:first)').remove();
+            $('select[name=network]').children('option:not(:first)').remove()
             $('input[name=quantity]').val('')
             $('input[name=network]').val('')
 
@@ -188,6 +189,7 @@
             $('select[name=asin]').children('option:not(:first)').remove();
             $('select[name=color]').children('option:not(:first)').remove();
             $('select[name=storage]').children('option:not(:first)').remove();
+            $('select[name=network]').children('option:not(:first)').remove()
             $('input[name=quantity]').val('')
             $('input[name=network]').val('')
 
@@ -211,6 +213,7 @@
             $('select[name=asin]').children('option:not(:first)').remove();
             $('select[name=color]').children('option:not(:first)').remove();
             $('select[name=storage]').children('option:not(:first)').remove();
+            $('select[name=network]').children('option:not(:first)').remove()
             $('input[name=quantity]').val('')
             $('input[name=network]').val('')
             var lot_id = $('#m_select2_1').val()
@@ -220,7 +223,7 @@
                 type: "GET",
                 url: '{{route("lot_by_lot_model")}}/'+lot_id+'?lot_brand='+lot_brand+'&lot_model='+lot_model,
                 success: function (data) {
-                        $('input[name=network]').val(data['network'])
+                        // $('input[name=network]').val(data['network'])
                     $.each(data['color'], function( index, value ) {
                         $('select[name=color]').append('<option value='+value+'>'+value+'</option>')
                         // $('select[name=storage]').append('<option value='+value.storage_id+'>'+value.storage+'</option>')
@@ -231,18 +234,23 @@
         }
 
         function getStorageByColor(){
-            $('select[name=asin]').children('option:not(:first)').remove();
-            $('select[name=storage]').children('option:not(:first)').remove();
+            $('select[name=asin]').children('option:not(:first)').remove()
+            $('select[name=network]').children('option:not(:first)').remove()
+            $('select[name=storage]').children('option:not(:first)').remove()
             $('input[name=quantity]').val('')
 
-            var lot_id = $('#m_select2_1').val();
-            var color = $('select[name=color]').val();
+            var lot_id = $('#m_select2_1').val()
+            var color = $('select[name=color]').val()
+            var model = $('select[name=model]').val()
             $.ajax({
                 type: "get",
-                url: '{{route("get_storage_by_color")}}/'+lot_id+'?color='+color,
+                url: '{{route("get_storage_by_color")}}/'+lot_id+'?color='+color+'&model='+model,
                 success: function (data) {
-                    $.each(data, function( index, value ) {
+                    $.each(data['storage'], function( index, value ) {
                         $('select[name=storage]').append('<option value='+value.id+'>'+value.name+'</option>')
+                    });
+                    $.each(data['networks'], function( index, value ) {
+                        $('select[name=network]').append('<option value='+value.name+'>'+value.name+'</option>')
                     });
                 }
             })
@@ -287,7 +295,8 @@
                 success: function (data) {
                     console.log(data+ 'working')
                     $.each(data['storage'], function( index, value ) {
-                        $('input[name=quantity]').val(value.asin_total_quantity)
+                        console.log('Totla Q: '+value.asin_total_quantity + ' Inventort Q: ' + value.inventory_quantity)
+                        $('input[name=quantity]').val(value.asin_total_quantity - value.inventory_quantity)
                         if($('input[name=quantity]').val() == 0){
                             $('.update_asin_qty_when_zero').removeClass('hide')
                         }

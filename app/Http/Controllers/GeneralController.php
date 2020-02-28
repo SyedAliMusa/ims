@@ -81,10 +81,18 @@ class GeneralController extends Controller
         ];
     }
     public function getStorageByColor(Request $request, $lot_id){
-        return $data = Lot::join('storages','lots.storage_id','=','storages.id')
+        $storage = Lot::join('storages','lots.storage_id','=','storages.id')
             ->where('lot_id','=', $lot_id)
             ->where('color','=', $request->get('color'))
             ->select('storages.*')->groupBy('storage_id')->get();
+
+        $networks = Lot::join('networks','lots.network_id','=','networks.id')
+            ->where('lot_id','=', $lot_id)
+            ->where('color','=', $request->get('color'))
+            ->where('model','=', $request->get('model'))
+            ->select('networks.*')->groupBy('network_id')->get();
+
+        return $data = ['storage' => $storage, 'networks' => $networks];
     }
     public function getAsinByStorage(Request $request, $lot_id){
         $brand_id = Brand::where('name','=',$request->get('lot_brand'))->first();
@@ -105,7 +113,7 @@ class GeneralController extends Controller
     public function getAsinByStorageQty(Request $request, $lot_id){
 
         $brand_id = Brand::where('name','=',$request->get('brand'))->first();
-        $data = DB::select(DB::raw('select asin_total_quantity from lots where color = :color AND storage_id = :storage AND brand_id = :brand AND lot_id = :lot
+        $data = DB::select(DB::raw('select asin_total_quantity, inventory_quantity from lots where color = :color AND storage_id = :storage AND brand_id = :brand AND lot_id = :lot
                                     AND asin = :asin AND model = :model'),['color' => $request->get('color'), 'storage' => $request->get('storage_id'),
                                     'brand' => $brand_id->id, 'lot' => $lot_id,'asin' => $request->get('asin'), 'model' => $request->get('model')]);
 
