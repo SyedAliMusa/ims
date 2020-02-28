@@ -166,6 +166,7 @@
                                 $('#tracking_ids').text(_response[1]);
                                 $('.on_error').removeClass('has-error')
                                 $('#addmore_btn').addClass('hide')
+                                $('#addmore_btn').removeClass('focused')
                                 $('#imei_exist_tracking').html("")
                                 $('#imei_exist').html("")
                                 $('input[id=brand]').val('')
