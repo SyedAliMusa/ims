@@ -34,7 +34,28 @@
                     <form action="{{route('lots.store')}}" method="post" class="form-horizontal" id="lot_insert_form" role="form">
                         {{csrf_field()}}
                         <div class="row">
-                            <div class="col-md-4 offset-1">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-6 offset-1">
+                                <div class="form-group margin-0">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td>
+                                            <label for="usr">Bought Qty</label>
+                                            <input type="number" class="form-control" name="bought_qty" id=""  value="" required>
+                                            </td>
+                                            <td>
+                                            <label for="usr">Received Qty</label>
+                                            <input type="number" class="form-control" name="received_qty" id=""  value="" required>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                {{--<div class="col-xs-6">--}}
+                                    {{--<div class="form-group ">--}}
+                                        {{--<label for="usr">Received Qty</label>--}}
+                                        {{--<input type="number" class="form-control" name="received_qty" id=""  value="" required>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
                                 <div class="form-group margin-0">
                                     <label for="usr">Lot_ID</label>
                                     <input type="text" class="form-control" name="lot_id" id=""  value="" oninput="this.value=this.value.replace(/[^0-9a-zA-Z-_]/g,'');" required>
@@ -52,7 +73,7 @@
                                     <label for="pwd">Model</label>
                                     <select class="form-control" id="m_select2_3" name="model"  required>
                                         <option value="" selected></option>
-                                    {{--<input type="text" class="form-control" name="model" id="" value="" oninput="this.value=this.value.replace(/[^0-9a-zA-Z-_]/g,'');" required>--}}
+                                        {{--<input type="text" class="form-control" name="model" id="" value="" oninput="this.value=this.value.replace(/[^0-9a-zA-Z-_]/g,'');" required>--}}
                                     </select>
                                 </div>
                                 <div class="form-group margin-0">
@@ -64,20 +85,8 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-xs-6">
-                                    <div class="form-group">
-                                        <label for="usr">Bought Qty</label>
-                                        <input type="number" class="form-control" name="bought_qty" id=""  value="" required>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="form-group ">
-                                        <label for="usr">Received Qty</label>
-                                        <input type="number" class="form-control" name="received_qty" id=""  value="" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4  offset-1">
+                                <!--</div>-->
+                                <!--<div class="col-md-4  offset-1">-->
                                 <div class="form-group margin-0">
                                     <label for="pwd">Color</label>
                                     <input type="text" class="form-control" name="color" id=""  value="" oninput="this.value=this.value.replace(/[^a-zA-Z-_]/g,'');" required>
