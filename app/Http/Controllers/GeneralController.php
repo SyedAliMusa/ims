@@ -95,6 +95,7 @@ class GeneralController extends Controller
         $storage = Lot::join('storages','lots.storage_id','=','storages.id')
             ->where('lot_id','=', $lot_id)
             ->where('color','=', $request->get('color'))
+            ->where('model','=', $request->get('model'))
             ->select('storages.*')->groupBy('storage_id')->get();
 
         $networks = Lot::join('networks','lots.network_id','=','networks.id')

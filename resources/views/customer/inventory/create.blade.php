@@ -259,11 +259,11 @@
             var color = $('select[name=color]').val()
             var model = $('select[name=model]').val()
             var brand = $('select[name=brand]').val()
+            console.log('Lot_ID: ' + lot_id + ' Brand: ' + brand + ' Model: ' + model + ' Color: ' + color)
             $.ajax({
                 type: "get",
                 url: '{{route("get_storage_by_color")}}/'+lot_id+'?color='+color+'&model='+model+'&brand='+brand,
                 success: function (data) {
-
                     if (data['network'] != null) {
                         $('input[name=network]').val(data['network'])
                     } else {
