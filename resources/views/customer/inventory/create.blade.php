@@ -293,11 +293,12 @@
             var color = $('select[name=color]').val();
             var storage_id = $('select[name=storage]').val();
             var lot_brand = $('#brand_id').val()
+            var model = $('select[name=model]').val();
             console.log(color + storage_id + lot_brand)
 
             $.ajax({
                 type: "GET",
-                url: '{{route("get_asin_by_storage_rest")}}/'+lot_id+'?color='+color+'&storage_id='+storage_id+'&lot_brand='+lot_brand,
+                url: '{{route("get_asin_by_storage_rest")}}/'+lot_id+'?color='+color+'&storage_id='+storage_id+'&lot_brand='+lot_brand+'&model='+model,
                 success: function (data) {
                     $.each(data['asin'], function( index, value ) {
                         $('select[name=asin]').append('<option value='+value.asin+'>'+value.asin+'</option>')

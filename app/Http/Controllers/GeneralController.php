@@ -123,8 +123,9 @@ class GeneralController extends Controller
     public function getAsinByStorageRest(Request $request, $lot_id){
 
         $brand_id = Brand::where('name','=',$request->get('lot_brand'))->first();
-        $data = DB::select(DB::raw('select asin from lots where color = :color AND storage_id = :storage AND brand_id = :brand AND lot_id = :lot')
-                                    ,['color' => $request->get('color'), 'storage' => $request->get('storage_id'), 'brand' => $brand_id->id, 'lot' => $lot_id]);
+        $data = DB::select(DB::raw('select asin from lots where color = :color AND storage_id = :storage AND brand_id = :brand AND lot_id = :lot AND model= :model')
+                                    ,['color' => $request->get('color'), 'storage' => $request->get('storage_id'),
+                                    'brand' => $brand_id->id, 'lot' => $lot_id, 'model' => $request->get('model'),]);
 
         return $data = ['asin' => $data];
 
