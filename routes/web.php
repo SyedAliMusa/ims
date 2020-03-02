@@ -106,6 +106,7 @@ Route::match(['GET' , 'POST'],"refurbisherLcdReport", "ReportController@refurbis
 
 //general routsget_asin_by_storage_rest
 Route::get('lot_by_lot_id/{lot_id?}','GeneralController@getLotByLotId')->name('lot_by_lot_id');
+Route::get('imei_match_with_tracking_id/{track_id?}','GeneralController@checkIMEIMatchWithTrackingId')->name('imei_match_with_tracking_id');
 Route::get('lot_by_lot_brand/{lot_id?}','GeneralController@getLotByLotIdBrand')->name('lot_by_lot_brand');
 Route::get('lot_by_lot_model/{lot_id?}','GeneralController@getLotByLotIdModel')->name('lot_by_lot_model');
 Route::get('get_storage_by_color/{lot_id?}','GeneralController@getStorageByColor')->name('get_storage_by_color');

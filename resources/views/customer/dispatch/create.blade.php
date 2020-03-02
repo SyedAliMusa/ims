@@ -127,7 +127,67 @@
                 var track_id = $('#tracking_id').val();
                 var match = true
                 var checkboxes = document.getElementsByName('imies[]');
-                $.each( checkboxes, function( key, value ) {
+                $.ajax({
+                    type: "GET",
+                    url: '{{route("imei_match_with_tracking_id")}}/' + track_id,
+                    success: function (data) {
+                        console.log(data)
+                       if (data == 'true') {
+                           $.ajaxSetup({
+                               headers: {
+                                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                               }
+                           });
+                           $.ajax({
+                               url: '{{route("dispatch.store")}}',
+                               type: "POST",
+                               data: $('#form_dispatch').serialize(),
+
+                               success: function( _response ){
+                                   // Handle your response..
+                                   if (_response[2] == 'MatchIds'){
+                                       $('#imei_id_val').focus();
+                                       $('#imei_id_val').val('');
+                                       $('#tracking_id').val('');
+                                       $('.on_error').addClass('has-error')
+                                       $('#imei_exist_tracking').html("Tracking Id contains imei number")
+                                       beep()
+                                       Swal.fire('Tracking Id contains imei number')
+                                   } else {
+                                       $('#imei_id_val').focus();
+                                       $('#total_imei').text(_response[0]);
+                                       $('#tracking_ids').text(_response[1]);
+                                       $('.on_error').removeClass('has-error')
+                                       $('#addmore_btn').addClass('hide')
+                                       $('#addmore_btn').removeClass('focused')
+                                       $('#imei_exist_tracking').html("")
+                                       $('#imei_exist').html("")
+                                       $('input[id=brand]').val('')
+                                       $('input[id=model]').val('')
+                                       $('input[id=network]').val('')
+                                       $('input[id=storage]').val('')
+                                       $('input[id=color]').val('')
+                                       $('input[id=category]').val('')
+                                       $('#imei_success').html("")
+                                       $('#tracking_id').val('');
+                                   }
+                               },
+                               error: function(_response){
+                                   // Handle error
+                                   console.log(_response);
+                               }
+                           });
+                       } else {
+                           $('#tracking_id').focus();
+                           $('#tracking_id').val('');
+                           $('.on_error').addClass('has-error')
+                           $('#imei_exist_tracking').html("Tracking Id contains imei number")
+                           beep()
+                           Swal.fire('Tracking Id contains imei number')
+                       }
+                    }
+                });
+               /* $.each( checkboxes, function( key, value ) {
                     if(value['value'] == track_id) {
                         match = false
                         $('#tracking_id').focus();
@@ -184,7 +244,7 @@
                             console.log(_response);
                         }
                     });
-                }
+                }*/
             });
         })
 

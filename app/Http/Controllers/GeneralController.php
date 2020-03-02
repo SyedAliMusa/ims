@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Brand;
 use App\Category;
 use App\Dispatch;
+use App\IMEI;
 use App\Inventory;
 use App\Lot;
 use App\Returns;
@@ -62,6 +63,15 @@ class GeneralController extends Controller
         return $data = [
             'model' => $models,
         ];
+    }
+
+    public function checkIMEIMatchWithTrackingId(Request $request, $track_id){
+        $match = DB::select(DB::raw('select * from inventories where imei = :imei'), ['imei' => $track_id]);
+        if (!empty($match) || $match != null){
+            return 'false';
+        } else {
+            return 'true';
+        }
     }
 
     public function getLotByLotIdModel(Request $request, $lot_id){
