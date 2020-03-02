@@ -75,9 +75,9 @@
                                                                autofocus
                                                                @endif
                                                                autocomplete="off">
-                                                        <small id="imei_exist" class="text-danger">{{session('fail_release')}}</small>
-                                                        <small id="imei_exist" class="text-success">{{session('success_release')}}</small>
-                                                        <small id="imei_exist" class="text-primary">{{session('already_verified')}}</small>
+                                                        <small id="imei_exist" class="text-danger" style="font-size: x-large">{{session('fail_release')}}</small>
+                                                        <small id="imei_exist" class="text-success" style="font-size: x-large">{{session('success_release')}}</small>
+                                                        <small id="imei_exist" class="text-primary" style="font-size: x-large">{{session('already_verified')}}</small>
 
                                                     </div>
                                                 </div>
