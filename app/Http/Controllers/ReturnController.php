@@ -28,6 +28,7 @@ class ReturnController extends Controller
         if ($request->has('query')){
             $products = Returns::join('inventories','returns.inventory_id','=','inventories.id')
                 ->orWhere('imei','like', "%{$request->get('query')}%")
+                ->select('inventories.*', 'returns.*', 'returns.created_at as return_date')
                 ->simplePaginate(100);
         }
         else {

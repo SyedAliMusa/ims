@@ -326,8 +326,16 @@
                                                         <label><input type="checkbox" name="47" class="form-check-input"
                                                                       value="47-Other">
                                                             47- Other</label></div></div></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td><div class="form-group">
+                                                    <div class="radio">
+                                                        <label><input type="checkbox" name="48" class="form-check-input"
+                                                                      value="48-No Longer Needed">
+                                                            48- No Longer Needed</label></div></div></td>
+                                            <td><div class="form-group">
+                                                    <div class="radio">
+                                                        <label><input type="checkbox" name="49" class="form-check-input"
+                                                                      value="49-Battery Die Quick">
+                                                            49- Battery Die Quick</label></div></div></td>
                                         </tr>
                                         </tbody>
                                     </table>

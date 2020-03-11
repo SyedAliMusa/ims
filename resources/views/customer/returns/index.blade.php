@@ -75,7 +75,7 @@
                             <th>Comments</th>
                             <th>Status</th>
                             <th>Date Added</th>
-                            <th>Added By</th>
+                            <th>Returned By</th>
                         </tr>
                         </thead>
                         <tbody>

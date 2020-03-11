@@ -80,7 +80,7 @@
                                 </div>
                                 <div class="form-group margin-0" id="tracking_id_llll">
                                     <label for="usr">Tracking_ID</label>
-                                    <input type="text" class="form-control" tabindex="0" name="tracking_id" id="tracking_id" maxlength="30" value="" required>
+                                    <input type="text" class="form-control" tabindex="0" name="tracking_id" disabled id="tracking_id" maxlength="30" value="" required>
                                     <!--<input type="hidden" class="form-control" tabindex="0" name="tracking_id" id="" maxlength="30" value="" required>-->
                                     <small id="imei_exist_tracking" class="text-danger" style="font-size: x-large"></small>
                                 </div>
@@ -316,6 +316,7 @@
                         $('input[id=storage]').val(data['storage'])
                         $('input[id=color]').val(data['color'])
                         $('input[id=category]').val(data['category'])
+                        $('#tracking_id').removeAttr('disabled')
 
                         if ( $('#addmore_btn').hasClass('focused')) {
                             $('#imei_id_val').focus();
