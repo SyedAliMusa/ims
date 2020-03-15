@@ -169,6 +169,7 @@ class WareHouseController extends Controller
                 $res = WarehouseInOut::insert([
                     'inventory_id' => $is_exist->id,
                     'issued_to' => $issued_to,
+                    'color_folder' => $request->get('color_folder'),
                     'created_by' => Auth::id(),
                     'Account' => $request->Account,
                     ]);
@@ -176,6 +177,7 @@ class WareHouseController extends Controller
                      $res = WarehouseInOut::insert([
                     'inventory_id' => $is_exist->id,
                     'issued_to' => $issued_to,
+                     'color_folder' => $request->get('color_folder'),
                     'created_by' => Auth::id(),
                     ]);
                 }

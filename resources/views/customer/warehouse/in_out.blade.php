@@ -33,11 +33,24 @@
                                             {{csrf_field()}}
                                             <div class="row">
                                                 <div class="col-md-3">
-                                                  
+                                                    <div class="form-group">
+                                                        <b class="text-primary">Color Folder</b>
+                                                        <select class="form-control select_tags" name="color_folder" required>
+                                                            <option value="">Select Color Folder</option>
+                                                            <option value="black">Black</option>
+                                                            <option value="purple">Purple</option>
+                                                            <option value="blue">Blue</option>
+                                                            <option value="green">Green</option>
+                                                            <option value="pink">Pink</option>
+                                                            <option value="red">Red</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
                                                     <div class="form-group">
                                                         <b class="text-primary">Issued To </b>
                                                         <select class="form-control select_tags" name="issued_to" required>
-                                                            <option value="">  </option>
+                                                            <option value="">Select User</option>
                                                             @if (session('issued_to'))
                                                                 <option value="{{session('issued_to')}}" selected>{{session('issued_to')}}</option>
                                                             @endif
@@ -46,7 +59,6 @@
                                                             <option value="Reinel">Reinel</option>
                                                         </select>
                                                     </div>
-                                                     
                                                 </div>
                                                 <div col-md-3>
                                                     <div class="form-group account">

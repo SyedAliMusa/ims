@@ -34,6 +34,11 @@ Route::get('/testing_problem/{testing_id?}', function ($testing_id) {
 
 Auth::routes();
 
+Route::get('/report/color_folder', function () {
+    $results = [];
+    return view('customer.reports.color_folder', compact('results'));
+})->name('report.colorfolder');
+Route::get('/reports/colorbased', 'ReportController@getcolorbase')->name('colorfolder.store');
 Route::get('/register', 'HomeController@getRegister')->name('register');
 Route::get('/users', 'HomeController@getUsers')->name('users.data');
 Route::post('/users/delete/{user_id}', 'HomeController@deleteUsers')->name('users.delete.id');
