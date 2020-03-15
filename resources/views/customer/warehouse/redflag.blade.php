@@ -39,6 +39,15 @@
                                             <div class="form-group">
                                                 <input type="text"  class="form-control" id="datepicker_from" name="from" title="From" placeholder="From" value="" autocomplete="off">
                                                 <input type="text"  class="form-control" id="datepicker_to" name="to" title="To range picker" placeholder="To" value="" autocomplete="off">
+                                                <select class="form-control" name="colors" >
+                                                    <option value="">select Color</option>
+                                                    <option value="black">Black</option>
+                                                    <option value="white">White</option>
+                                                    <option value="red">Red</option>
+                                                    <option value="blue">Blue</option>
+                                                    <option value="purple">Purple</option>
+                                                    <option value="gold">Gold</option>
+                                                </select>
                                                 <select class="form-control" name="issued_to_for_report" >
                                                     <option value="">select Tester</option>
                                                     <option value="Tester">Tester</option>
@@ -58,7 +67,7 @@
                     <div class="m-portlet__head-tools">
                         <ul class="m-portlet__nav">
                             <li class="m-portlet__nav-item">
-                                <a class="btn btn-brand" href="{{route('ExportRedFlag')}}?from={{request()->input('from')}}&to={{request()->input('to')}}&issued_to_for_report={{request()->input('issued_to_for_report')}}">Export Excel</a>
+                                <a class="btn btn-brand" href="{{route('ExportRedFlag')}}?from={{request()->input('from')}}&to={{request()->input('to')}}&issued_to_for_report={{request()->input('issued_to_for_report')}}&colors={{request()->input('colors')}}">Export Excel</a>
                             </li>
                         </ul>
                     </div>
@@ -81,13 +90,13 @@
                         <tbody>
                         @foreach($products as $product)
                             <tr>
-                                <td>{{$product->inventory->lot['model']}}</td>
-                                <td>{{$product->inventory->lot['storage']['name']}}</td>
-                                <td>{{$product->inventory->lot['color']}}</td>
-                                <td>{{$product->inventory->imei}}</td>
-                                <td>{{$product->inventory->category->name}}</td>
+                                <td>{{$product->model}}</td>
+                                <td>{{$product->storage}}</td>
+                                <td>{{$product->color}}</td>
+                                <td>{{$product->imei}}</td>
+                                <td>{{$product->cat_name}}</td>
                                 <td>{{$product->issued_to}}</td>
-                                <td title="{{$product->created_at}}">{{date('M-d-Y', strtotime($product->created_at))}}</td>
+                                <td title="{{$product->c_date}}">{{date('M-d-Y', strtotime($product->c_date))}}</td>
                             </tr>
                         @endforeach
                         </tbody>

@@ -1712,7 +1712,7 @@ class ReportController extends Controller
         if ($request->has('issued_to_for_report')){
 
             $expect_three_days =  strtotime(\Carbon\Carbon::now());
-            $expect_three_days = strtotime("-3 day", $expect_three_days);
+            $expect_three_days = strtotime("+1 day", $expect_three_days);
             $expect_three_days = date("Y-m-d", $expect_three_days);
 
             if ($request->has('from') and $request->has('to')) {
@@ -1723,22 +1723,30 @@ class ReportController extends Controller
                 $from = date("Y-m-d", $from);
 
                 $issued_to = $request->get('issued_to_for_report');
-                $products = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to) {
-                    $query->where('status', '=', 1);
-                    $query->where('issued_to', '=', $issued_to);
-                })->orderByDesc('id')
-                    ->where('created_at','<', $expect_three_days)
-                    ->whereBetween('warehouse_in_out.created_at', [$from, $to])
-                    ->get();
+
+                if ($request->has('colors')){
+                    $color = $request->get('colors');
+                    $products = DB::select(DB::raw('SELECT l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
+                        FROM warehouse_in_out w INNER JOIN inventories i on w.inventory_id = i.id 
+	                    INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
+                        INNER JOIN storages s on s.id = l.storage_id INNER JOIN categories c on c.id = i.category_id where i.status = 1 
+                        AND w.issued_to = :it AND w.created_at BETWEEN :from AND :to  AND l.color = :color order by w.id DESC '),
+                        ['it' => $issued_to, 'from' => $from, 'to' => $to, 'color' => $color]);
+                } else {
+                    $products = DB::select(DB::raw('SELECT l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
+                        FROM warehouse_in_out w INNER JOIN inventories i on w.inventory_id = i.id 
+	                    INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
+                        INNER JOIN storages s on s.id = l.storage_id INNER JOIN categories c on c.id = i.category_id where i.status = 1 
+                        AND w.issued_to = :it AND w.created_at BETWEEN :from AND :to order by w.id DESC '), ['it' => $issued_to, 'from' => $from, 'to' => $to]);
+                }
             }
             else {
                 $issued_to = $request->get('issued_to_for_report');
-                $products = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to) {
-                    $query->where('status', '=', 1);
-                    $query->where('issued_to', '=', $issued_to);
-                })->orderByDesc('id')
-                    ->where('created_at','<', $expect_three_days)
-                    ->get();
+                $products = DB::select(DB::raw('SELECT l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
+                        FROM warehouse_in_out w INNER JOIN inventories i on w.inventory_id = i.id 
+	                    INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
+                        INNER JOIN storages s on s.id = l.storage_id INNER JOIN categories c on c.id = i.category_id where i.status = 1 
+                        AND w.issued_to = :it  order by w.id DESC '), ['it' => $issued_to]);
 
             }
         }
@@ -1750,16 +1758,23 @@ class ReportController extends Controller
             $from = date("Y-m-d", $from);
 
             $expect_three_days =  strtotime(\Carbon\Carbon::now());
-            $expect_three_days = strtotime("-3 day", $expect_three_days);
+            $expect_three_days = strtotime("+1 day", $expect_three_days);
             $expect_three_days = date("Y-m-d", $expect_three_days);
 
-            $products = WarehouseInOut::whereHas('inventory', function ($query) {
-                $query->where('status', '=', 1);
-            })->orderByDesc('id')
-                ->where('created_at','<', $expect_three_days)
-                ->whereBetween('warehouse_in_out.created_at', [$from, $to])
-                ->get();
+            $products =  DB::select(DB::raw('SELECT l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
+                        FROM warehouse_in_out w INNER JOIN inventories i on w.inventory_id = i.id 
+	                    INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
+                        INNER JOIN storages s on s.id = l.storage_id INNER JOIN categories c on c.id = i.category_id where i.status = 1 
+                        AND w.created_at BETWEEN :from AND :to order by w.id DESC '), ['from' => $from, 'to' => $to]);
 
+        }
+        elseif ($request->has('colors')){
+            $color = $request->get('colors');
+            $products = DB::select(DB::raw('SELECT l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
+                        FROM warehouse_in_out w INNER JOIN inventories i on w.inventory_id = i.id 
+	                    INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
+                        INNER JOIN storages s on s.id = l.storage_id INNER JOIN categories c on c.id = i.category_id where i.status = 1 
+                        AND l.color = :color order by w.id DESC '), ['color' => $color]);
         }
         else{
             $products = [];
@@ -1768,14 +1783,11 @@ class ReportController extends Controller
         header('Content-Type: text/csv; charset=utf-8');
         header('Content-Disposition: attachment; filename=data.csv');
         $output = fopen("php://output", "w");
-        fputcsv($output, array('Brand', 'Model', 'Network', 'Storage', 'Color', 'Imei', 'Category', 'Date', 'Tester'));
+        fputcsv($output, array('Model', 'Storage', 'Color', 'Imei', 'Category', 'Date', 'Tester'));
 
         foreach ($products as $product) {
-            if ($product->inventory->lot) {
-
-                $row = ['Brand' => $product->inventory->lot->brand->name, 'Model' => $product->inventory->lot->model, 'Network' => $product->inventory->lot->network->name, 'Storage' => $product->inventory->lot->storage->name, 'Color' => $product->inventory->lot->color, 'Imei' => $product->inventory->imei, 'Category' => $product->inventory->category->name, 'Date' => $product->created_at, 'Tester' => $product->issued_to];
+            $row = ['Model' => $product->model, 'Storage' => $product->storage, 'Color' => $product->color, 'Imei' => $product->imei, 'Category' => $product->cat_name, 'Date' => $product->c_date, 'Tester' => $product->issued_to];
                 fputcsv($output, $row);
-            }
         }
         fclose($output);
 

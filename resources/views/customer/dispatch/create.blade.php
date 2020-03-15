@@ -71,7 +71,7 @@
                             <div class="col-md-4 m--margin-left-30">
                                 <div class="form-group margin-0 on_error">
                                     <label for="usr">IMEI</label>
-                                    <input type="text" class="form-control" name="imei" id="imei_id_val" onchange="getLotByimei()" oninput="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="15" value="" required autofocus="autofocus">
+                                    <input type="text" class="form-control" name="imei" id="imei_id_val" onchange="getLotByimei()" oninput="this.value=this.value.replace(/[^0-9]/g,'');" minlength="15" maxlength="15" value="" required autofocus="autofocus">
                                     <small id="imei_exist" class="text-danger" style="font-size: x-large"></small>
                                 </div>
                                 <div class="form-group margin-0">
@@ -132,68 +132,70 @@
                     url: '{{route("imei_match_with_tracking_id")}}/' + track_id,
                     success: function (data) {
                         console.log(data)
-                       if (data == 'true') {
-                           $.ajaxSetup({
-                               headers: {
-                                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                               }
-                           });
-                           $.ajax({
-                               url: '{{route("dispatch.store")}}',
-                               type: "POST",
-                               data: $('#form_dispatch').serialize(),
+                        if (data == 'true') {
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+                            $.ajax({
+                                url: '{{route("dispatch.store")}}',
+                                type: "POST",
+                                data: $('#form_dispatch').serialize(),
 
-                               success: function( _response ){
-                                   // Handle your response..
-                                   if (_response[2] == 'MatchIds'){
-                                       $('#imei_id_val').focus();
-                                       $('#imei_id_val').val('');
-                                       $('#tracking_id').val('');
-                                       $('.on_error').addClass('has-error')
-                                       $('#imei_exist_tracking').html("Tracking Id contains imei number")
-                                       beep()
-                                       Swal({
-                                           background: 'orange',
-                                           type: 'error',
-                                           title: 'Tracking Id contains imei number'
-                                       })
-                                   } else {
-                                       $('#imei_id_val').focus();
-                                       $('#total_imei').text(_response[0]);
-                                       $('#tracking_ids').text(_response[1]);
-                                       $('.on_error').removeClass('has-error')
-                                       $('#addmore_btn').addClass('hide')
-                                       $('#addmore_btn').removeClass('focused')
-                                       $('#imei_exist_tracking').html("")
-                                       $('#imei_exist').html("")
-                                       $('input[id=brand]').val('')
-                                       $('input[id=model]').val('')
-                                       $('input[id=network]').val('')
-                                       $('input[id=storage]').val('')
-                                       $('input[id=color]').val('')
-                                       $('input[id=category]').val('')
-                                       $('#imei_success').html("")
-                                       $('#tracking_id').val('');
-                                   }
-                               },
-                               error: function(_response){
-                                   // Handle error
-                                   console.log(_response);
-                               }
-                           });
-                       } else {
-                           $('#tracking_id').focus();
-                           $('#tracking_id').val('');
-                           $('.on_error').addClass('has-error')
-                           $('#imei_exist_tracking').html("Tracking Id contains imei number")
-                           beep()
-                           Swal({
-                               allowEnterKey: false,
-                               background: 'orange',
-                               type: 'error',
-                               title: 'Tracking Id contains imei number'
-                           })
-                       }
+                                success: function( _response ){
+                                    // Handle your response..
+                                    if (_response[2] == 'MatchIds'){
+                                        $('#imei_id_val').focus();
+                                        $('#imei_id_val').val('');
+                                        $('#tracking_id').val('');
+                                        $('.on_error').addClass('has-error')
+                                        $('#imei_exist_tracking').html("Tracking Id contains imei number")
+                                        beep()
+                                        alert("Tracking Id contains imei number")
+                                        /*Swal({
+                                            background: 'orange',
+                                            type: 'error',
+                                            title: 'Tracking Id contains imei number'
+                                        })*/
+                                    } else {
+                                        $('#imei_id_val').focus();
+                                        $('#total_imei').text(_response[0]);
+                                        $('#tracking_ids').text(_response[1]);
+                                        $('.on_error').removeClass('has-error')
+                                        $('#addmore_btn').addClass('hide')
+                                        $('#addmore_btn').removeClass('focused')
+                                        $('#imei_exist_tracking').html("")
+                                        $('#imei_exist').html("")
+                                        $('input[id=brand]').val('')
+                                        $('input[id=model]').val('')
+                                        $('input[id=network]').val('')
+                                        $('input[id=storage]').val('')
+                                        $('input[id=color]').val('')
+                                        $('input[id=category]').val('')
+                                        $('#imei_success').html("")
+                                        $('#tracking_id').val('');
+                                    }
+                                },
+                                error: function(_response){
+                                    // Handle error
+                                    console.log(_response);
+                                }
+                            });
+                        } else {
+                            $('#tracking_id').focus();
+                            $('#tracking_id').val('');
+                            $('.on_error').addClass('has-error')
+                            $('#imei_exist_tracking').html("Tracking Id contains imei number")
+                            beep()
+                            alert("Tracking Id contains imei number")
+                            /* Swal({
+                                 allowEnterKey: false,
+                                 background: 'orange',
+                                 type: 'error',
+                                 title: 'Tracking Id contains imei number'
+                             })*/
+                        }
                     }
                 });
             });
@@ -242,13 +244,14 @@
                         $('.on_error').addClass('has-error')
                         $('#imei_exist').html("Imei already dispatched! you can't dispatch it again")
                         beep()
-                        Swal({
+                        alert("Imei already dispatched! you can't dispatch it again")
+                        /*Swal({
                             allowEnterKey: false,
                             background: "#D8735D",
                             textcolor: "#FFF",
                             type: 'error',
                             title: '<span style="color:#FFFFFF">Imei already dispatched! you can\'t dispatch it again</span>'
-                        })
+                        })*/
                     }
                     else if(data['not_tested']){
                         $('#imei_id_val').focus();
@@ -256,13 +259,14 @@
                         $('#imei_id_val').val('');
                         $('#imei_exist').html("Imei not tested!")
                         beep()
-                        Swal({
-                            allowEnterKey: false,
-                            background: "#EEAEA0",
-                            textcolor: "#FFF",
-                            type: 'error',
-                            title: 'Imei not tested!'
-                        })
+                        alert("Imei not tested!")
+                        /* Swal({
+                             allowEnterKey: false,
+                             background: "#EEAEA0",
+                             textcolor: "#FFF",
+                             type: 'error',
+                             title: 'Imei not tested!'
+                         })*/
                     }
                     else if(data['not_found']){
                         $('#imei_id_val').focus();
@@ -270,13 +274,14 @@
                         $('#imei_id_val').val('');
                         $('#imei_exist').html("Imei not found!")
                         beep()
-                        Swal({
+                        alert("Imei not found!")
+                        /*Swal({
                             allowEnterKey: false,
                             background: "#A55645",
                             textcolor: "#FFF",
                             type: 'error',
                             title: '<span style="color:#FFFFFF">Imei not found!</span>'
-                        })
+                        })*/
                     }
                     else if(data['not_released']){
                         $('#imei_id_val').focus();
@@ -284,13 +289,14 @@
                         $('#imei_id_val').val('');
                         $('#imei_exist').html("Imei is not yet Release!")
                         beep()
-                        Swal({
-                            allowEnterKey: false,
-                            background: "#924F40",
-                            textcolor: "#FFF",
-                            type: 'error',
-                            title: '<span style="color:#FFFFFF">Imei is not yet Release!</span>'
-                        })
+                        alert("Imei is not yet Release!")
+                        /* Swal({
+                             allowEnterKey: false,
+                             background: "#924F40",
+                             textcolor: "#FFF",
+                             type: 'error',
+                             title: '<span style="color:#FFFFFF">Imei is not yet Release!</span>'
+                         })*/
                     }
                     else if($('span#'+imei_no).html() == imei_no){
                         $('#imei_id_val').focus();
@@ -298,13 +304,14 @@
                         $('#imei_id_val').val('');
                         $('#imei_exist').html("Imei aleady added in the list!")
                         beep()
-                        Swal({
+                        alert("Imei aleady added in the list!")
+                        /*Swal({
                             allowEnterKey: false,
                             background: "#634A44",
                             textcolor: "#FFF",
                             type: 'error',
                             title: '<span style="color:#FFFFFF">Imei aleady added in the list!</span>'
-                        })
+                        })*/
                     }
                     else {
                         $('.on_error').removeClass('has-error')
@@ -317,6 +324,7 @@
                         $('input[id=color]').val(data['color'])
                         $('input[id=category]').val(data['category'])
                         $('#tracking_id').removeAttr('disabled')
+                        $('#tracking_id').focus()
 
                         if ( $('#addmore_btn').hasClass('focused')) {
                             $('#imei_id_val').focus();
