@@ -39,7 +39,7 @@
                                             <div class="form-group">
                                                 <input type="text"  class="form-control" id="datepicker_from" name="from" title="From" placeholder="From" value="" autocomplete="off">
                                                 <input type="text"  class="form-control" id="datepicker_to" name="to" title="To range picker" placeholder="To" value="" autocomplete="off">
-                                                <select class="form-control" name="colors" >
+                                                {{--<select class="form-control" name="colors" >
                                                     <option value="">select Color</option>
                                                     <option value="black">Black</option>
                                                     <option value="white">White</option>
@@ -47,7 +47,7 @@
                                                     <option value="blue">Blue</option>
                                                     <option value="purple">Purple</option>
                                                     <option value="gold">Gold</option>
-                                                </select>
+                                                </select>--}}
                                                 <select class="form-control" name="issued_to_for_report" >
                                                     <option value="">select Tester</option>
                                                     <option value="Tester">Tester</option>
@@ -82,6 +82,7 @@
                             <th>Storage</th>
                             <th>Color</th>
                             <th>Imei</th>
+                            <th>Color Folder</th>
                             <th>Category</th>
                             <th>Issued To</th>
                             <th>Date</th>
@@ -94,6 +95,7 @@
                                 <td>{{$product->storage}}</td>
                                 <td>{{$product->color}}</td>
                                 <td>{{$product->imei}}</td>
+                                <td>{{$product->color_folder}}</td>
                                 <td>{{$product->cat_name}}</td>
                                 <td>{{$product->issued_to}}</td>
                                 <td title="{{$product->c_date}}">{{date('M-d-Y', strtotime($product->c_date))}}</td>

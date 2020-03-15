@@ -314,14 +314,14 @@ class WareHouseController extends Controller
 
                 if ($request->has('colors')){
                     $color = $request->get('colors');
-                    $products = DB::select(DB::raw('SELECT l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
+                    $products = DB::select(DB::raw('SELECT w.color_folder, l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
                         FROM warehouse_in_out w INNER JOIN inventories i on w.inventory_id = i.id 
 	                    INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
                         INNER JOIN storages s on s.id = l.storage_id INNER JOIN categories c on c.id = i.category_id where i.status = 1 
                         AND w.issued_to = :it AND w.created_at BETWEEN :from AND :to  AND l.color = :color order by w.id DESC '),
                         ['it' => $issued_to, 'from' => $from, 'to' => $to, 'color' => $color]);
                 } else {
-                    $products = DB::select(DB::raw('SELECT l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
+                    $products = DB::select(DB::raw('SELECT w.color_folder, l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
                         FROM warehouse_in_out w INNER JOIN inventories i on w.inventory_id = i.id 
 	                    INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
                         INNER JOIN storages s on s.id = l.storage_id INNER JOIN categories c on c.id = i.category_id where i.status = 1 
@@ -330,7 +330,7 @@ class WareHouseController extends Controller
             }
             else {
                 $issued_to = $request->get('issued_to_for_report');
-                $products = DB::select(DB::raw('SELECT l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
+                $products = DB::select(DB::raw('SELECT w.color_folder, l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
                         FROM warehouse_in_out w INNER JOIN inventories i on w.inventory_id = i.id 
 	                    INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
                         INNER JOIN storages s on s.id = l.storage_id INNER JOIN categories c on c.id = i.category_id where i.status = 1 
@@ -349,7 +349,7 @@ class WareHouseController extends Controller
             $expect_three_days = strtotime("+1 day", $expect_three_days);
             $expect_three_days = date("Y-m-d", $expect_three_days);
 
-            $products =  DB::select(DB::raw('SELECT l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
+            $products =  DB::select(DB::raw('SELECT w.color_folder, l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
                         FROM warehouse_in_out w INNER JOIN inventories i on w.inventory_id = i.id 
 	                    INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
                         INNER JOIN storages s on s.id = l.storage_id INNER JOIN categories c on c.id = i.category_id where i.status = 1 
@@ -358,7 +358,7 @@ class WareHouseController extends Controller
         }
         elseif ($request->has('colors')){
             $color = $request->get('colors');
-            $products = DB::select(DB::raw('SELECT l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
+            $products = DB::select(DB::raw('SELECT w.color_folder, l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
                         FROM warehouse_in_out w INNER JOIN inventories i on w.inventory_id = i.id 
 	                    INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
                         INNER JOIN storages s on s.id = l.storage_id INNER JOIN categories c on c.id = i.category_id where i.status = 1 
