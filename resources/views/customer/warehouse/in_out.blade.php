@@ -37,6 +37,9 @@
                                                         <b class="text-primary">Color Folder</b>
                                                         <select class="form-control select_tags" name="color_folder" required>
                                                             <option value="">Select Color Folder</option>
+                                                            @if (session('issued_to'))
+                                                                <option value="{{session('color_folder')}}" selected>{{session('color_folder')}}</option>
+                                                            @endif
                                                             <option value="black">Black</option>
                                                             <option value="purple">Purple</option>
                                                             <option value="blue">Blue</option>

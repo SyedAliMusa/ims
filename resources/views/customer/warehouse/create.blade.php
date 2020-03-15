@@ -77,6 +77,15 @@
                                         <div class="form-group">
                                             <input type="text"  class="form-control" id="datepicker_from" name="from" title="From" placeholder="From" value="" autocomplete="off">
                                             <input type="text"  class="form-control" id="datepicker_to" name="to" title="To range picker" placeholder="To" value="" autocomplete="off">
+                                            <select class="form-control select_tags" name="colors">
+                                                <option value="">Select Color Folder</option>
+                                                <option value="black">Black</option>
+                                                <option value="purple">Purple</option>
+                                                <option value="blue">Blue</option>
+                                                <option value="green">Green</option>
+                                                <option value="pink">Pink</option>
+                                                <option value="red">Red</option>
+                                            </select>
                                             <select class="form-control" name="issued_to_for_report" >
                                                 <option value="">select Tester</option>
                                                 <option value="Tester">Tester</option>
@@ -100,12 +109,12 @@
                                 <table class="table table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
-                                        <th>Brand</th>
                                         <th>Model</th>
                                         <th>Network</th>
                                         <th>Color</th>
                                         <th>Imei</th>
                                         <th>Category</th>
+                                        <th>Color Folder</th>
                                         <th>Status</th>
                                         <th>Issued To</th>
                                         <th>Added By</th>
@@ -116,12 +125,12 @@
                                     <tbody>
                                     @foreach($products as $product)
                                         <tr>
-                                            <td>{{$product->inventory->lot->brand->name}}</td>
                                             <td>{{$product->inventory->lot->model}}</td>
                                             <td>{{$product->inventory->lot->network->name}}</td>
                                             <td>{{$product->inventory->lot->color}}</td>
                                             <td>{{$product->inventory->imei}}</td>
                                             <td>{{$product->inventory->category->name}}</td>
+                                            <td>{{$product->color_folder}}</td>
                                             <td>
                                                 <span class="m-badge  m-badge--info m-badge--wide">In Progress</span>
                                             </td>

@@ -53,7 +53,8 @@ class WareHouseController extends Controller
      */
     public function create(Request $request)
     {
-        if ($request->has('issued_to_for_report')){
+        if ($request->has('issued_to_for_report')) {
+            $issued_to = $request->get('issued_to_for_report');
             if ($request->has('from') and $request->has('to')) {
                 $from = strtotime($request->get('from'));
                 $to = strtotime($request->get('to'));
@@ -61,21 +62,51 @@ class WareHouseController extends Controller
                 $to = date("Y-m-d", $date_inc);
                 $from = date("Y-m-d", $from);
 
-                $issued_to = $request->get('issued_to_for_report');
-                $products = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to) {
+                if ($request->has('colors')) {
+                    $color = $request->get('colors');
+                    $products = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to, $color) {
+                        $query->where('status', '=', 1);
+                        $query->where('issued_to', '=', $issued_to);
+                        $query->where('color_folder','=', $color);
+                    })->orderByDesc('id')
+                        ->whereBetween('warehouse_in_out.created_at', [$from, $to])
+                        ->simplePaginate(1000);
+
+                    $products->total = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to, $color) {
+                        $query->where('status', '=', 1);
+                        $query->where('issued_to', '=', $issued_to);
+                        $query->where('color_folder','=', $color);
+                    })->whereBetween('warehouse_in_out.created_at', [$from, $to])
+                        ->get()->count();
+                } else {
+                    $products = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to) {
+                        $query->where('status', '=', 1);
+                        $query->where('issued_to', '=', $issued_to);
+                    })->orderByDesc('id')
+                        ->whereBetween('warehouse_in_out.created_at', [$from, $to])
+                        ->simplePaginate(1000);
+
+                    $products->total = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to) {
+                        $query->where('status', '=', 1);
+                        $query->where('issued_to', '=', $issued_to);
+                    })->whereBetween('warehouse_in_out.created_at', [$from, $to])
+                        ->get()->count();
+                }
+            } elseif ($request->has('colors')) {
+                $color = $request->get('colors');
+                $products = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to, $color) {
                     $query->where('status', '=', 1);
                     $query->where('issued_to', '=', $issued_to);
+                    $query->where('color_folder','=', $color);
                 })->orderByDesc('id')
-                    ->whereBetween('warehouse_in_out.created_at', [$from, $to])
                     ->simplePaginate(1000);
 
-                $products->total = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to) {
+                $products->total = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to, $color) {
                     $query->where('status', '=', 1);
                     $query->where('issued_to', '=', $issued_to);
-                })->whereBetween('warehouse_in_out.created_at', [$from, $to])
-                    ->get()->count();
-            }
-            else {
+                    $query->where('color_folder','=', $color);
+                })->get()->count();
+            } else {
                 $issued_to = $request->get('issued_to_for_report');
                 $products = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to) {
                     $query->where('status', '=', 1);
@@ -96,16 +127,45 @@ class WareHouseController extends Controller
             $to = date("Y-m-d", $date_inc);
             $from = date("Y-m-d", $from);
 
-            $products = WarehouseInOut::whereHas('inventory', function ($query) {
+            if ($request->has('colors')) {
+                $color = $request->get('colors');
+                $products = WarehouseInOut::whereHas('inventory', function ($query) use ($color) {
+                    $query->where('status', '=', 1);
+                    $query->where('color_folder','=', $color);
+                })->orderByDesc('id')
+                    ->whereBetween('warehouse_in_out.created_at', [$from, $to])
+                    ->simplePaginate(1000);
+
+                $products->total = WarehouseInOut::whereHas('inventory', function ($query) use ($color) {
+                    $query->where('status', '=', 1);
+                    $query->where('color_folder','=', $color);
+                })->whereBetween('warehouse_in_out.created_at', [$from, $to])
+                    ->get()->count();
+            } else {
+                $products = WarehouseInOut::whereHas('inventory', function ($query) {
+                    $query->where('status', '=', 1);
+                })->orderByDesc('id')
+                    ->whereBetween('warehouse_in_out.created_at', [$from, $to])
+                    ->simplePaginate(1000);
+
+                $products->total = WarehouseInOut::whereHas('inventory', function ($query) {
+                    $query->where('status', '=', 1);
+                })->whereBetween('warehouse_in_out.created_at', [$from, $to])
+                    ->get()->count();
+            }
+
+        } elseif ($request->has('colors')) {
+            $color = $request->get('colors');
+            $products = WarehouseInOut::whereHas('inventory', function ($query) use ($color) {
                 $query->where('status', '=', 1);
+                $query->where('color_folder','=', $color);
             })->orderByDesc('id')
-                ->whereBetween('warehouse_in_out.created_at', [$from, $to])
                 ->simplePaginate(1000);
 
-            $products->total = WarehouseInOut::whereHas('inventory', function ($query) {
+            $products->total = WarehouseInOut::whereHas('inventory', function ($query) use ($color) {
                 $query->where('status', '=', 1);
-            })->whereBetween('warehouse_in_out.created_at', [$from, $to])
-                ->get()->count();
+                $query->where('color_folder','=', $color);
+            })->get()->count();
         }
         else{
             $products = [];
@@ -160,7 +220,7 @@ class WareHouseController extends Controller
 
             if ($already_exist_in){
                 return redirect()->back()
-                    ->with(['already_verified' => 'Repeat: This '.$imei.' has already been checked Out', 'issued_to' => $issued_to,'Account'=>$request->Account]);
+                    ->with(['already_verified' => 'Repeat: This '.$imei.' has already been checked Out', 'issued_to' => $issued_to,'color_folder' => $request->get("color_folder"),'Account'=>$request->Account]);
                 /*return redirect()->route('warehouse.create',['issued_to'=>$issued_to])
                     ->with(['already_verified' => 'Repeat: This '.$imei.' has already been checked Out']);*/
             }
@@ -182,14 +242,14 @@ class WareHouseController extends Controller
                     ]);
                 }
                 return redirect()->back()
-                    ->with(['success_release' => 'Success: stocked out', 'issued_to' => $issued_to,'Account'=>$request->Account]);
+                    ->with(['success_release' => 'Success: stocked out', 'issued_to' => $issued_to,'color_folder' => $request->get("color_folder"),'Account'=>$request->Account]);
                 /*  return redirect()->route('warehouse.create',['issued_to'=>$issued_to])
                       ->with(['success' => 'Success: stocked out']);*/
             }
         }
         else{
             return redirect()->back()
-                ->with(['fail_release' => 'Fail: Not available in "Warehouse"', 'issued_to' => $issued_to,'Account'=>$request->Account]);
+                ->with(['fail_release' => 'Fail: Not available in "Warehouse"', 'issued_to' => $issued_to,'color_folder' => $request->get("color_folder"),'Account'=>$request->Account]);
         }
     }
 
