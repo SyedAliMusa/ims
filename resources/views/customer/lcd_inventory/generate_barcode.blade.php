@@ -45,6 +45,7 @@
 >
 {{--<button id="printPageButton" onclick="myFunction()">Print Barcode</button>--}}
 
+
 <?php
 if(isset($_GET['submit'])) {
     $band = \App\Brand::find($_GET['brand_id']);
@@ -93,14 +94,10 @@ if(isset($_GET['submit'])) {
                     <div style="margin-top: 5%;margin-left: -7px">
                         <!--<p style="margin-bottom: -2px; "><b>{{$band->name}} {{$model}} {{$category}}</b></p>-->
                         <p style="margin-bottom: -2px;font-size:14px; "><b> {{$model}} {{$category}}</b></p>
-                        <svg  id="barcode{{$i}}"></svg>
-                        <script>
-                            JsBarcode("#barcode{{$i}}", "{{$random_no}}", {
-                                // format: "code11",
-                                height: 50
-                            });
-
-                        </script>
+                            <?php
+                            echo DNS1D::getBarcodeSVG($random_no, "C39", 1, 25, '#2A3239');
+                            ?>
+                            <p style="margin-bottom: -2px;font-size:14px; "><b> <?php echo $random_no ?> </b></p>
                     </div>
                 </td>
             </tr>
