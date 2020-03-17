@@ -32,6 +32,9 @@
                                     @if(\App\UserPermissions::where('u_id','=', Auth::user()->id)->where('p_id','=', 6)->first())
                                         <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('stock-adjustment.index')}}" class="m-menu__link "><span class="m-menu__link-text">Stock Adjustment </span></a></li>
                                     @endif
+                                    @if(\App\UserPermissions::where('u_id','=', Auth::user()->id)->where('p_id','=', 5)->first())
+                                        <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('models.index')}}" class="m-menu__link "><span class="m-menu__link-text">Models</span></a></li>
+                                    @endif
                                 </ul>
                             </div>
                         </li>
@@ -121,7 +124,7 @@
                                         class="m-menu__link-text">Phone Warehouse</span><i class="m-menu__hor-arrow la la-angle-right"></i><i class="m-menu__ver-arrow la la-angle-right"></i></a>
                             <div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--right"><span class="m-menu__arrow "></span>
                                 <ul class="m-menu__subnav">
-                                    <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('warehouse.index')}}" class="m-menu__link "><span class="m-menu__link-text">Warehouse Items</span></a></li>
+                                    <!--<li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('warehouse.index')}}" class="m-menu__link "><span class="m-menu__link-text">Warehouse Items</span></a></li>-->
                                     <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('warehouse_in_out')}}?release=true" class="m-menu__link "><span class="m-menu__link-text">Release </span></a></li>
                                     <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('warehouse_in_out')}}" class="m-menu__link "><span class="m-menu__link-text">Receive </span></a></li>
                                     <!--<li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('Search-Unlock-Codes')}}" class="m-menu__link "><span class="m-menu__link-text">Search Unlock Codes </span></a></li>-->
@@ -134,8 +137,8 @@
                                         class="m-menu__link-text">LCD Warehouse</span><i class="m-menu__hor-arrow la la-angle-right"></i><i class="m-menu__ver-arrow la la-angle-right"></i></a>
                             <div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--right"><span class="m-menu__arrow "></span>
                                 <ul class="m-menu__subnav">
-                                    <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('lcd_inventory.index')}}" class="m-menu__link "><span class="m-menu__link-text">LCD Inventory</span></a></li>
-                                    <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('lcd_inventory.lcd_warehouse')}}" class="m-menu__link "><span class="m-menu__link-text">LCD Warehouse</span></a></li>
+                                    <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('lcd_inventory.print_barcode')}}" class="m-menu__link "><span class="m-menu__link-text">Print LCD Barcodes</span></a></li>
+                                    {{--<li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('lcd_inventory.lcd_warehouse')}}" class="m-menu__link "><span class="m-menu__link-text">LCD Warehouse</span></a></li>--}}
                                     {{--<li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('lcd_inventory.print_barcode')}}" class="m-menu__link "><span class="m-menu__link-text">Print LCD Barcode</span></a></li>--}}
                                     {{--<li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('lcd_inventory.create')}}" class="m-menu__link "><span class="m-menu__link-text">Add LCD Inventory</span></a></li>--}}
                                     <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('lcd_inventory.issue_lcd')}}" class="m-menu__link "><span class="m-menu__link-text">LCD Release & Receive</span></a></li>
@@ -233,6 +236,7 @@
                                         <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('report.dispatch')}}" class="m-menu__link "><span class="m-menu__link-text">Dispatch Report</span></a></li>
                                     @endif
                                     @if(\App\UserPermissions::where('u_id','=', Auth::user()->id)->where('p_id','=', 18)->first())
+                                        <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('report.colorfolder')}}" class="m-menu__link "><span class="m-menu__link-text">Color Folder Report</span></a></li>
                                         <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('report.tester')}}" class="m-menu__link "><span class="m-menu__link-text">Tester Report</span></a></li>
                                         <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('warehouse.create')}}" class="m-menu__link "><span class="m-menu__link-text">Release & Receive Report</span></a></li>
                                         <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('report.attachIMEIWithLCD')}}" class="m-menu__link "><span class="m-menu__link-text">IMEI With LCD Report</span></a></li>

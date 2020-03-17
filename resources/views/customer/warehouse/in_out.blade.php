@@ -33,11 +33,27 @@
                                             {{csrf_field()}}
                                             <div class="row">
                                                 <div class="col-md-3">
-                                                  
+                                                    <div class="form-group">
+                                                        <b class="text-primary">Color Folder</b>
+                                                        <select class="form-control select_tags" name="color_folder" required>
+                                                            <option value="">Select Color Folder</option>
+                                                            @if (session('issued_to'))
+                                                                <option value="{{session('color_folder')}}" selected>{{session('color_folder')}}</option>
+                                                            @endif
+                                                            <option value="black">Black</option>
+                                                            <option value="purple">Purple</option>
+                                                            <option value="blue">Blue</option>
+                                                            <option value="green">Green</option>
+                                                            <option value="pink">Pink</option>
+                                                            <option value="red">Red</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
                                                     <div class="form-group">
                                                         <b class="text-primary">Issued To </b>
                                                         <select class="form-control select_tags" name="issued_to" required>
-                                                            <option value="">  </option>
+                                                            <option value="">Select User</option>
                                                             @if (session('issued_to'))
                                                                 <option value="{{session('issued_to')}}" selected>{{session('issued_to')}}</option>
                                                             @endif
@@ -46,7 +62,6 @@
                                                             <option value="Reinel">Reinel</option>
                                                         </select>
                                                     </div>
-                                                     
                                                 </div>
                                                 <div col-md-3>
                                                     <div class="form-group account">
@@ -75,9 +90,9 @@
                                                                autofocus
                                                                @endif
                                                                autocomplete="off">
-                                                        <small id="imei_exist" class="text-danger">{{session('fail_release')}}</small>
-                                                        <small id="imei_exist" class="text-success">{{session('success_release')}}</small>
-                                                        <small id="imei_exist" class="text-primary">{{session('already_verified')}}</small>
+                                                        <small id="imei_exist" class="text-danger" style="font-size: x-large">{{session('fail_release')}}</small>
+                                                        <small id="imei_exist" class="text-success" style="font-size: x-large">{{session('success_release')}}</small>
+                                                        <small id="imei_exist" class="text-primary" style="font-size: x-large">{{session('already_verified')}}</small>
 
                                                     </div>
                                                 </div>

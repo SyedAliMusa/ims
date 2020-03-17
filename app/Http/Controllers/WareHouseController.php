@@ -6,7 +6,7 @@ use App\AttachIMEIToLCD;
 use App\Inventory;
 use App\WarehouseInOut;
 use App\IMEI;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -32,33 +32,17 @@ class WareHouseController extends Controller
      
     public function index(Request $request)
     {
-        $products = DB::table('warehouse_in_out')
-                    ->join('inventories','warehouse_in_out.inventory_id', '=', 'inventories.id')
-                    ->where('status','=',1)
-                    ->where('inventories.id','<>','warehouse_in_out.inventory_id')
-                    ->orderByDesc('inventories.id')
-                    ->simplePaginate(20);
-//        print_r($products);die;
-        /*$products = Inventory::leftJoin('warehouse_in_out','inventories.id','=','warehouse_in_out.inventory_id')
+        $products = Inventory::leftJoin('warehouse_in_out','inventories.id','=','warehouse_in_out.inventory_id')
             ->where('status','=',1)
             ->where('inventories.id','<>','warehouse_in_out.inventory_id')
             ->orderByDesc('inventories.id')
             ->simplePaginate(20);
-print_r($products);die;
+
         $products->total = Inventory::leftJoin('warehouse_in_out','inventories.id','=','warehouse_in_out.inventory_id')
             ->where('status','=',1)
             ->where('inventories.id','<>','warehouse_in_out.inventory_id')
-            ->get()->count();*/
-
-        $products->total = DB::table('warehouse_in_out')
-                            ->leftjoin('inventories','warehouse_in_out.inventory_id', '=', 'inventories.id')
-                            ->where('status','=',1)
-                            ->where('inventories.id','<>','warehouse_in_out.inventory_id')
-                            ->get()->count();
-        foreach($products as $product => $val) {
-            print_r($val);die;
-        }
-print_r($products->lot->asin);die;
+            ->get()->count();
+        
         return view('customer.warehouse.index',compact('products'));
     }
 
@@ -69,7 +53,8 @@ print_r($products->lot->asin);die;
      */
     public function create(Request $request)
     {
-        if ($request->has('issued_to_for_report')){
+        if ($request->has('issued_to_for_report')) {
+            $issued_to = $request->get('issued_to_for_report');
             if ($request->has('from') and $request->has('to')) {
                 $from = strtotime($request->get('from'));
                 $to = strtotime($request->get('to'));
@@ -77,21 +62,51 @@ print_r($products->lot->asin);die;
                 $to = date("Y-m-d", $date_inc);
                 $from = date("Y-m-d", $from);
 
-                $issued_to = $request->get('issued_to_for_report');
-                $products = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to) {
+                if ($request->has('colors')) {
+                    $color = $request->get('colors');
+                    $products = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to, $color) {
+                        $query->where('status', '=', 1);
+                        $query->where('issued_to', '=', $issued_to);
+                        $query->where('color_folder','=', $color);
+                    })->orderByDesc('id')
+                        ->whereBetween('warehouse_in_out.created_at', [$from, $to])
+                        ->simplePaginate(1000);
+
+                    $products->total = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to, $color) {
+                        $query->where('status', '=', 1);
+                        $query->where('issued_to', '=', $issued_to);
+                        $query->where('color_folder','=', $color);
+                    })->whereBetween('warehouse_in_out.created_at', [$from, $to])
+                        ->get()->count();
+                } else {
+                    $products = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to) {
+                        $query->where('status', '=', 1);
+                        $query->where('issued_to', '=', $issued_to);
+                    })->orderByDesc('id')
+                        ->whereBetween('warehouse_in_out.created_at', [$from, $to])
+                        ->simplePaginate(1000);
+
+                    $products->total = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to) {
+                        $query->where('status', '=', 1);
+                        $query->where('issued_to', '=', $issued_to);
+                    })->whereBetween('warehouse_in_out.created_at', [$from, $to])
+                        ->get()->count();
+                }
+            } elseif ($request->has('colors')) {
+                $color = $request->get('colors');
+                $products = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to, $color) {
                     $query->where('status', '=', 1);
                     $query->where('issued_to', '=', $issued_to);
+                    $query->where('color_folder','=', $color);
                 })->orderByDesc('id')
-                    ->whereBetween('warehouse_in_out.created_at', [$from, $to])
                     ->simplePaginate(1000);
 
-                $products->total = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to) {
+                $products->total = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to, $color) {
                     $query->where('status', '=', 1);
                     $query->where('issued_to', '=', $issued_to);
-                })->whereBetween('warehouse_in_out.created_at', [$from, $to])
-                    ->get()->count();
-            }
-            else {
+                    $query->where('color_folder','=', $color);
+                })->get()->count();
+            } else {
                 $issued_to = $request->get('issued_to_for_report');
                 $products = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to) {
                     $query->where('status', '=', 1);
@@ -112,16 +127,45 @@ print_r($products->lot->asin);die;
             $to = date("Y-m-d", $date_inc);
             $from = date("Y-m-d", $from);
 
-            $products = WarehouseInOut::whereHas('inventory', function ($query) {
+            if ($request->has('colors')) {
+                $color = $request->get('colors');
+                $products = WarehouseInOut::whereHas('inventory', function ($query) use ($color) {
+                    $query->where('status', '=', 1);
+                    $query->where('color_folder','=', $color);
+                })->orderByDesc('id')
+                    ->whereBetween('warehouse_in_out.created_at', [$from, $to])
+                    ->simplePaginate(1000);
+
+                $products->total = WarehouseInOut::whereHas('inventory', function ($query) use ($color) {
+                    $query->where('status', '=', 1);
+                    $query->where('color_folder','=', $color);
+                })->whereBetween('warehouse_in_out.created_at', [$from, $to])
+                    ->get()->count();
+            } else {
+                $products = WarehouseInOut::whereHas('inventory', function ($query) {
+                    $query->where('status', '=', 1);
+                })->orderByDesc('id')
+                    ->whereBetween('warehouse_in_out.created_at', [$from, $to])
+                    ->simplePaginate(1000);
+
+                $products->total = WarehouseInOut::whereHas('inventory', function ($query) {
+                    $query->where('status', '=', 1);
+                })->whereBetween('warehouse_in_out.created_at', [$from, $to])
+                    ->get()->count();
+            }
+
+        } elseif ($request->has('colors')) {
+            $color = $request->get('colors');
+            $products = WarehouseInOut::whereHas('inventory', function ($query) use ($color) {
                 $query->where('status', '=', 1);
+                $query->where('color_folder','=', $color);
             })->orderByDesc('id')
-                ->whereBetween('warehouse_in_out.created_at', [$from, $to])
                 ->simplePaginate(1000);
 
-            $products->total = WarehouseInOut::whereHas('inventory', function ($query) {
+            $products->total = WarehouseInOut::whereHas('inventory', function ($query) use ($color) {
                 $query->where('status', '=', 1);
-            })->whereBetween('warehouse_in_out.created_at', [$from, $to])
-                ->get()->count();
+                $query->where('color_folder','=', $color);
+            })->get()->count();
         }
         else{
             $products = [];
@@ -176,7 +220,7 @@ print_r($products->lot->asin);die;
 
             if ($already_exist_in){
                 return redirect()->back()
-                    ->with(['already_verified' => 'Repeat: This '.$imei.' has already been checked Out', 'issued_to' => $issued_to,'Account'=>$request->Account]);
+                    ->with(['already_verified' => 'Repeat: This '.$imei.' has already been checked Out', 'issued_to' => $issued_to,'color_folder' => $request->get("color_folder"),'Account'=>$request->Account]);
                 /*return redirect()->route('warehouse.create',['issued_to'=>$issued_to])
                     ->with(['already_verified' => 'Repeat: This '.$imei.' has already been checked Out']);*/
             }
@@ -185,6 +229,7 @@ print_r($products->lot->asin);die;
                 $res = WarehouseInOut::insert([
                     'inventory_id' => $is_exist->id,
                     'issued_to' => $issued_to,
+                    'color_folder' => $request->get('color_folder'),
                     'created_by' => Auth::id(),
                     'Account' => $request->Account,
                     ]);
@@ -192,18 +237,19 @@ print_r($products->lot->asin);die;
                      $res = WarehouseInOut::insert([
                     'inventory_id' => $is_exist->id,
                     'issued_to' => $issued_to,
+                     'color_folder' => $request->get('color_folder'),
                     'created_by' => Auth::id(),
                     ]);
                 }
                 return redirect()->back()
-                    ->with(['success_release' => 'Success: stocked out', 'issued_to' => $issued_to,'Account'=>$request->Account]);
+                    ->with(['success_release' => 'Success: stocked out', 'issued_to' => $issued_to,'color_folder' => $request->get("color_folder"),'Account'=>$request->Account]);
                 /*  return redirect()->route('warehouse.create',['issued_to'=>$issued_to])
                       ->with(['success' => 'Success: stocked out']);*/
             }
         }
         else{
             return redirect()->back()
-                ->with(['fail_release' => 'Fail: Not available in "Warehouse"', 'issued_to' => $issued_to,'Account'=>$request->Account]);
+                ->with(['fail_release' => 'Fail: Not available in "Warehouse"', 'issued_to' => $issued_to,'color_folder' => $request->get("color_folder"),'Account'=>$request->Account]);
         }
     }
 
@@ -325,22 +371,30 @@ print_r($products->lot->asin);die;
                 $from = date("Y-m-d", $from);
 
                 $issued_to = $request->get('issued_to_for_report');
-                $products = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to) {
-                    $query->where('status', '=', 1);
-                    $query->where('issued_to', '=', $issued_to);
-                })->orderByDesc('id')
-                    ->where('created_at','<', $expect_three_days)
-                    ->whereBetween('warehouse_in_out.created_at', [$from, $to])
-                    ->simplePaginate(1000);
+
+                if ($request->has('colors')){
+                    $color = $request->get('colors');
+                    $products = DB::select(DB::raw('SELECT w.color_folder, l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
+                        FROM warehouse_in_out w INNER JOIN inventories i on w.inventory_id = i.id 
+	                    INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
+                        INNER JOIN storages s on s.id = l.storage_id INNER JOIN categories c on c.id = i.category_id where i.status = 1 
+                        AND w.issued_to = :it AND w.created_at BETWEEN :from AND :to  AND l.color = :color order by w.id DESC '),
+                        ['it' => $issued_to, 'from' => $from, 'to' => $to, 'color' => $color]);
+                } else {
+                    $products = DB::select(DB::raw('SELECT w.color_folder, l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
+                        FROM warehouse_in_out w INNER JOIN inventories i on w.inventory_id = i.id 
+	                    INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
+                        INNER JOIN storages s on s.id = l.storage_id INNER JOIN categories c on c.id = i.category_id where i.status = 1 
+                        AND w.issued_to = :it AND w.created_at BETWEEN :from AND :to order by w.id DESC '), ['it' => $issued_to, 'from' => $from, 'to' => $to]);
+                }
             }
             else {
                 $issued_to = $request->get('issued_to_for_report');
-                $products = WarehouseInOut::whereHas('inventory', function ($query) use ($issued_to) {
-                    $query->where('status', '=', 1);
-                    $query->where('issued_to', '=', $issued_to);
-                })->orderByDesc('id')
-                    ->where('created_at','<', $expect_three_days)
-                    ->simplePaginate(1000);
+                $products = DB::select(DB::raw('SELECT w.color_folder, l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
+                        FROM warehouse_in_out w INNER JOIN inventories i on w.inventory_id = i.id 
+	                    INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
+                        INNER JOIN storages s on s.id = l.storage_id INNER JOIN categories c on c.id = i.category_id where i.status = 1 
+                        AND w.issued_to = :it  order by w.id DESC '), ['it' => $issued_to]);
 
             }
         }
@@ -355,18 +409,25 @@ print_r($products->lot->asin);die;
             $expect_three_days = strtotime("+1 day", $expect_three_days);
             $expect_three_days = date("Y-m-d", $expect_three_days);
 
-            $products = WarehouseInOut::whereHas('inventory', function ($query) {
-                $query->where('status', '=', 1);
-            })->orderByDesc('id')
-                ->where('created_at','<', $expect_three_days)
-                ->whereBetween('warehouse_in_out.created_at', [$from, $to])
-                ->simplePaginate(1000);
+            $products =  DB::select(DB::raw('SELECT w.color_folder, l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
+                        FROM warehouse_in_out w INNER JOIN inventories i on w.inventory_id = i.id 
+	                    INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
+                        INNER JOIN storages s on s.id = l.storage_id INNER JOIN categories c on c.id = i.category_id where i.status = 1 
+                        AND w.created_at BETWEEN :from AND :to order by w.id DESC '), ['from' => $from, 'to' => $to]);
 
+        }
+        elseif ($request->has('colors')){
+            $color = $request->get('colors');
+            $products = DB::select(DB::raw('SELECT w.color_folder, l.model as model, s.name as storage, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
+                        FROM warehouse_in_out w INNER JOIN inventories i on w.inventory_id = i.id 
+	                    INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
+                        INNER JOIN storages s on s.id = l.storage_id INNER JOIN categories c on c.id = i.category_id where i.status = 1 
+                        AND l.color = :color order by w.id DESC '), ['color' => $color]);
         }
         else{
             $products = [];
         }
-
+//        print_r($products[0]);die;
 
        /* $expect_three_days =  strtotime(\Carbon\Carbon::now());
         $expect_three_days = strtotime("-3 day", $expect_three_days);

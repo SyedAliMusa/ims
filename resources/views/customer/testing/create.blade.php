@@ -852,17 +852,11 @@
                         var timerInterval
                         Swal.fire({
                             title: 'Please release this phone from warehouse to be tested',
-                            timer: 2000,
-                            timerProgressBar: true,
-                            showConfirmButton: false,
-                            imageUrl: 'https://img.icons8.com/cute-clipart/64/000000/close-window.png',
-                            imageWidth: 80,
-                            imageHeight: 80,
-                            imageAlt: 'Failed',
+                            type: 'error',
                     })
-                        setTimeout(function(){
+                        /*setTimeout(function(){
                             window.location.href = '/warehouse/in_out?release=true'
-                        }, 2000);
+                        }, 2000);*/
                     }
                 }
             });

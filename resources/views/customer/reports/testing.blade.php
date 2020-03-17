@@ -89,11 +89,10 @@
                                 <div class="form-group">
                                     <input type="text" required class="form-control" id="datepicker_from" name="from" title="From" placeholder="From" value="" autocomplete="off">
                                     <input type="text" required class="form-control" id="datepicker_to" name="to" title="To range picker" placeholder="To" value="" autocomplete="off">
-
                                     <select class="form-control" name="tester_id" id="tester" >
                                         <option value="">select tester</option>
                                         @foreach(\App\User::all() as $tester)
-                                            @if ($tester->is_deleted !=1 && $tester->account_type == 'tester')
+                                            @if ($tester->is_deleted !=1 && ( $tester->account_type == 'tester' || $tester->id == 43))
                                                 <option value="{{$tester->id}}">{{$tester->name}} &nbsp;&nbsp;|: {{$tester->account_type}}</option>
                                             @endif
                                         @endforeach

@@ -1,7 +1,7 @@
 @extends('layouts.customer.app')
 
 @section("title")
-    Warehouse
+    Color Folder Based Performance
 @endsection
 @push("css")
 @endpush
@@ -12,7 +12,7 @@
         <div class="m-subheader ">
             <div class="d-flex align-items-center">
                 <div class="mr-auto">
-                    <h3 class="m-subheader__title ">Red-Flag</h3>
+                    <h3 class="m-subheader__title ">Color Folder Based Performance</h3>
                 </div>
                 <div>
                     <span class="m-subheader__daterange" id="m_dashboard_daterangepicker">
@@ -33,26 +33,20 @@
                     <div class="m-portlet__head-caption">
                         <div class="m-portlet__head-title">
                             <div class="col-md-12">
-                                <form method="get" action="{{url()->current()}}"class="form-inline">
+                                <form method="get" action="{{route('colorfolder.store')}}"class="form-inline">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <input type="text"  class="form-control" id="datepicker_from" name="from" title="From" placeholder="From" value="" autocomplete="off">
                                                 <input type="text"  class="form-control" id="datepicker_to" name="to" title="To range picker" placeholder="To" value="" autocomplete="off">
-                                                {{--<select class="form-control" name="colors" >
-                                                    <option value="">select Color</option>
+                                                <select class="form-control select_tags" name="colors">
+                                                    <option value="">Select Color Folder</option>
                                                     <option value="black">Black</option>
-                                                    <option value="white">White</option>
-                                                    <option value="red">Red</option>
-                                                    <option value="blue">Blue</option>
                                                     <option value="purple">Purple</option>
-                                                    <option value="gold">Gold</option>
-                                                </select>--}}
-                                                <select class="form-control" name="issued_to_for_report" >
-                                                    <option value="">select Tester</option>
-                                                    <option value="Tester">Tester</option>
-                                                    <option value="Refurbisher">Refurbisher</option>
-                                                    <option value="Reinel">Reinel</option>
+                                                    <option value="blue">Blue</option>
+                                                    <option value="green">Green</option>
+                                                    <option value="pink">Pink</option>
+                                                    <option value="red">Red</option>
                                                 </select>
                                                 <button type="submit"
                                                         class="btn btn-outline-warning">Get Report
@@ -64,17 +58,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="m-portlet__head-tools">
+                 {{--   <div class="m-portlet__head-tools">
                         <ul class="m-portlet__nav">
                             <li class="m-portlet__nav-item">
                                 <a class="btn btn-brand" href="{{route('ExportRedFlag')}}?from={{request()->input('from')}}&to={{request()->input('to')}}&issued_to_for_report={{request()->input('issued_to_for_report')}}&colors={{request()->input('colors')}}">Export Excel</a>
                             </li>
                         </ul>
-                    </div>
+                    </div>--}}
                 </div>
                 <div class="m-portlet__body">
                     <!--begin: Datatable -->
-                    <p class="text-info">Total (<b class="text-danger">{{count($products)}}</b>) items in Red-Flag</p>
+                    <p class="text-info">Total (<b class="text-danger">{{count($results)}}</b>) items</p>
                     <table class="table table-striped table-bordered table-hover">
                         <thead>
                         <tr>
@@ -89,7 +83,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($products as $product)
+                        @foreach($results as $product)
                             <tr>
                                 <td>{{$product->model}}</td>
                                 <td>{{$product->storage}}</td>

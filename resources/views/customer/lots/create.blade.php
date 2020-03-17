@@ -34,14 +34,35 @@
                     <form action="{{route('lots.store')}}" method="post" class="form-horizontal" id="lot_insert_form" role="form">
                         {{csrf_field()}}
                         <div class="row">
-                            <div class="col-md-4 offset-1">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-6 offset-1">
+                                <div class="form-group margin-0">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td>
+                                            <label for="usr">Bought Qty</label>
+                                            <input type="number" class="form-control" name="bought_qty" id=""  value="" required>
+                                            </td>
+                                            <td>
+                                            <label for="usr">Received Qty</label>
+                                            <input type="number" class="form-control" name="received_qty" id=""  value="" required>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                {{--<div class="col-xs-6">--}}
+                                    {{--<div class="form-group ">--}}
+                                        {{--<label for="usr">Received Qty</label>--}}
+                                        {{--<input type="number" class="form-control" name="received_qty" id=""  value="" required>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
                                 <div class="form-group margin-0">
                                     <label for="usr">Lot_ID</label>
                                     <input type="text" class="form-control" name="lot_id" id=""  value="" oninput="this.value=this.value.replace(/[^0-9a-zA-Z-_]/g,'');" required>
                                 </div>
                                 <div class="form-group margin-0">
                                     <label for="usr">Brand</label>
-                                    <select class="form-control" name="brand" id="sel1" required>
+                                    <select class="form-control" id="m_select2_1" name="brand" onchange="getModels()" required>
                                         <option value="" selected></option>
                                         @foreach($brands as $brand)
                                             <option value="{{$brand->id}}">{{$brand->name}}</option>
@@ -50,31 +71,22 @@
                                 </div>
                                 <div class="form-group margin-0">
                                     <label for="pwd">Model</label>
-                                    <input type="text" class="form-control" name="model" id="" value="" oninput="this.value=this.value.replace(/[^0-9a-zA-Z-_]/g,'');" required>
+                                    <select class="form-control" id="m_select2_3" name="model"  required>
+                                        <option value="" selected></option>
+                                        {{--<input type="text" class="form-control" name="model" id="" value="" oninput="this.value=this.value.replace(/[^0-9a-zA-Z-_]/g,'');" required>--}}
+                                    </select>
                                 </div>
                                 <div class="form-group margin-0">
                                     <label for="usr">Network</label>
-                                    <select class="form-control" name="network" id="sel1" required>
+                                    <select class="form-control" name="network" id="m_select2_2" required>
                                         <option value="" selected></option>
                                         @foreach($networks as $brand)
                                             <option value="{{$brand->id}}">{{$brand->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-xs-6">
-                                    <div class="form-group">
-                                        <label for="usr">Bought Qty</label>
-                                        <input type="number" class="form-control" name="bought_qty" id=""  value="" required>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="form-group ">
-                                        <label for="usr">Received Qty</label>
-                                        <input type="number" class="form-control" name="received_qty" id=""  value="" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4  offset-1">
+                                <!--</div>-->
+                                <!--<div class="col-md-4  offset-1">-->
                                 <div class="form-group margin-0">
                                     <label for="pwd">Color</label>
                                     <input type="text" class="form-control" name="color" id=""  value="" oninput="this.value=this.value.replace(/[^a-zA-Z-_]/g,'');" required>
@@ -125,6 +137,7 @@
     </div>
 @stop
 @push('scripts')
+    <script src="{{asset('customer/assets/demo/default/custom/crud/forms/widgets/select2.js')}}" type="text/javascript"></script>
     <script>
         $(document).ready(function() {
             $("input[name=color]").on('change, keyup', function() {
@@ -156,19 +169,17 @@
 
                 var brand =  $('select[name=brand] :selected').text();
                 var network =  $('select[name=network] :selected').text();
-                var model =  $('input[name=model]').val();
+                var model =  $('select[name=model]').val();
                 var color =  $('input[name=color]').val();
                 var storage =  $('select[name=storage]').val();
 
                 console.log(brand +' '+network +' '+model +' '+color +' '+storage )
 
-
                 $.ajax({
                     type: "GET",
                     url: '{{route("get_asin_by__")}}?brand_id='+brand+'&model='+model+'&color='+color+'&network_id='+network+'&storage_id='+storage,
                     success: function (data) {
-
-
+                        console.log(data)
                         if (data.length >0) {
                             $('#append').html(' <select class="form-control" name="asin" required></select>')
                             $.each(data, function (index, value) {
@@ -183,6 +194,22 @@
             })
 
         } );
+
+        function getModels(){
+            $('select[name=model]').children('option:not(:first)').remove();
+            var brand = $('select[name=brand]').val()
+            $.ajax({
+                type: "GET",
+                url: '{{route("get_models_for_lots")}}/'+brand+'?',
+                success: function (data) {
+                    $.each(data['model'], function( index, value ) {
+                        console.log('Model'+value.name)
+                        $('select[name=model]').append('<option value='+value.name+'>'+value.name+'</option>')
+                    });
+
+                }
+            })
+        }
 
         $('form#lot_insert_form').on('submit', function(e) {
             e.preventDefault();
@@ -213,7 +240,7 @@
                         lot_id: $('input[name=lot_id]').val(),
                         brand: $('select[name=brand]').val(),
                         network: $('select[name=network]').val(),
-                        model: $('input[name=model]').val(),
+                        model: $('select[name=model]').val(),
                         color: $('input[name=color]').val(),
                         storage: $('select[name=storage]').val(),
                         quantity: $('input[name=quantity]').val(),
