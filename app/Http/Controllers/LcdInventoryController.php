@@ -429,21 +429,21 @@ class LcdInventoryController extends Controller
         return view('customer.lcd_inventory.lcd_profile');
     }
     public function phone_profile(Request $request){
- 
+
          $products_release = WarehouseInOut::whereHas('inventory', function ($query) {
             $query->where('status', '=', 1);
         })->orderByDesc('id')
             ->get();
-           
+
         return view('customer.lcd_inventory.phone_profile',compact('products_release'));
     }
     public function phone_release_by_tester(Request $request){
- 
+
          $products_release = WarehouseInOut::whereHas('inventory', function ($query) {
             $query->where('status', '=', 1);
         })->orderByDesc('id')
             ->get();
-           
+
         return view('customer.lcd_inventory.phone_release_by_tester',compact('products_release'));
     }
     public function return_to_admin(Request $request){
@@ -480,7 +480,7 @@ class LcdInventoryController extends Controller
                         'acc_status' => '0'
                     ]);
                 AttachIMEIToLCD::where('id','=',$request->input('attach_imei_to_lcd_id'))->delete();
-               
+
                 return redirect()->back();
             }
             return view('customer.lcd_inventory.attach_imei_with_lcd');
@@ -491,7 +491,7 @@ class LcdInventoryController extends Controller
             $lcdInventory = LcdInventory::where('barcode', '=', $request->input('lcd_barcode'))->first();
             $lcd_modal = $lcdInventory->modal;
             $lot = Lot::find($lot_id);
-            
+
             if ($lcdInventory) {
                 Inventory::where('id', '=', $inventory->id)
                     ->update([

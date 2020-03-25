@@ -14,7 +14,7 @@
             display: none;
         }
         @endif
-        
+
     </style>
 @endpush
 @section('content')
@@ -75,7 +75,7 @@
                                                              @if (session('Account') != $x->name)
                                                            <option value="{{$x->name}}">{{$x->name}}</option>
                                                              @endif
-                                                           
+
                                                            @endforeach
                                                         </select>
                                                     </div>
@@ -146,7 +146,7 @@
                                                 </thead>
                                                 <tbody>
                                                 @foreach($products_release as $product)
-                                                
+
                                                     <tr>
                                                         {{--                                                    <td>{{$product->inventory->lot->brand->name}}</td>--}}
                                                         {{--                                                    <td>{{$product->inventory->lot->network->name}}</td>--}}
@@ -214,16 +214,16 @@
                                                        class="form-control input_border" name="imei" placeholder="Search IMEI" oninput="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="15" width="25%" autofocus autocomplete="off">
                                             </div>
                                         </div>
-                                       
+
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <b class="text-white">.</b>
                                                 <select class="form-control" name="category_id" required>
                                                     <option value="" selected></option>
                                                     @foreach(\App\Category::all() as $category)
-                                                       
+
                                                         <option value="{{$category->id}}" @if(session('id') && session('id') == $category->id ) selected  @endif >{{$category->name}}</option>
-                                                     
+
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -235,9 +235,9 @@
 
                                             </div>
                                         </div>
-                                        <small id="imei_exist" class="text-danger">{{session('fail')}}</small>
-                                        <small id="imei_exist" class="text-success">{{session('success')}}</small>
-                                        <small id="imei_exist" class="text-primary">{{session('already_verified')}}</small>
+                                        <small id="imei_exist" class="text-danger" style="font-size: x-large">{{session('fail')}}</small>
+                                        <small id="imei_exist" class="text-success" style="font-size: x-large">{{session('success')}}</small>
+                                        <small id="imei_exist" class="text-primary" style="font-size: x-large">{{session('already_verified')}}</small>
                                     </div>
 
                                 </form>

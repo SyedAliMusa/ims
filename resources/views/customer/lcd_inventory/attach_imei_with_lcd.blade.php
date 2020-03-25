@@ -86,7 +86,7 @@
                                             <td>{{$item->user->name}}</td>
                                             <td>Marry                                        </td>
                                             <td>
-                                                @if ($item->status != 2)
+                                                @if ($item->lcdInventory->status != 2)
                                                     <a class="btn btn-outline-warning btn-sm" href="{{url()->current()}}?attach_imei_to_lcd_id={{$item->id}}">Unmarry</a> </td>
                                             @else
                                                 Dispatched
@@ -100,8 +100,12 @@
                                             <td>{{$item->inventory->imei}}</td>
                                             <td>{{$item->lcdInventory->barcode}}</td>
                                             <td>{{$item->user->name}}</td>
-                                            <td>Marry                                        </td>
-                                            <td><a class="btn btn-outline-warning btn-sm" href="{{url()->current()}}?attach_imei_to_lcd_id={{$item->id}}">Unmarry</a> </td>
+                                            <td>Marry</td>
+                                            @if ($item->lcdInventory->status != 2)
+                                            <td><a class="btn btn-outline-warning btn-sm" href="{{url()->current()}}?attach_imei_to_lcd_id={{$item->id}}">Unmarry</a></td>
+                                            @else
+                                                <td>Dispatched</td>
+                                            @endif
                                         </tr>
                                         @endif
                                     @endforeach
