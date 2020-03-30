@@ -45,18 +45,6 @@
 >
 {{--<button id="printPageButton" onclick="myFunction()">Print Barcode</button>--}}
 
-
-
-<?php
-//                            echo \Milon\Barcode\DNS1D::getBarcodeSVG("1234", "C39", 1, 25, "#2A3239");
-
-                            ?>
-
-
-
-
-
-
 <?php
 if(isset($_GET['submit'])) {
     $band = \App\Brand::find($_GET['brand_id']);
@@ -107,7 +95,7 @@ if(isset($_GET['submit'])) {
                         <!--<p style="margin-bottom: -2px; "><b> {{ $band->name }} <?php echo $model; ?> ' ' <?php echo $category ?></b></p>-->
                         <p style="margin-bottom: -2px;font-size:14px; "><b><?php echo $model; ?> ' ' <?php echo $category ?></b></p>
                             <?php
-//                            echo \Milon\Barcode\DNS1D::getBarcodeSVG($random_no, "C39", 1, 25, '#2A3239');
+                            echo DNS1D::getBarcodeSVG($random_no, "C39", 1, 25, '#2A3239');
                             ?>
                             <p style="margin-bottom: -2px;font-size:14px; "><b> <?php echo $random_no ?> </b></p>
                     </div>
