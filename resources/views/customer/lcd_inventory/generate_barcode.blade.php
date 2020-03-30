@@ -92,12 +92,12 @@ if(isset($_GET['submit'])) {
             <tr style="text-align: center">
                 <td>
                     <div style="margin-top: 5%;margin-left: -7px">
-                        <!--<p style="margin-bottom: -2px; "><b> {{ $band->name }} <?php echo $model; ?> ' ' <?php echo $category ?></b></p>-->
-                        <p style="margin-bottom: -2px;font-size:14px; "><b><?php echo $model; ?> ' ' <?php echo $category ?></b></p>
+                        <!--<p style="margin-bottom: -2px; "><b> {{ $band->name }} {{ $model }} {{$category }}</b></p>-->
+                        <p style="margin-bottom: -2px;font-size:14px; "><b> {{ $model }} {{$category }}</b></p>
                             <?php
                             echo DNS1D::getBarcodeSVG($random_no, "C39", 1, 25, '#2A3239');
                             ?>
-                            <p style="margin-bottom: -2px;font-size:14px; "><b> <?php echo $random_no ?> </b></p>
+                            <p style="margin-top: -2px;font-size:14px; "><b> {{ $random_no }} </b></p>
                     </div>
                 </td>
             </tr>
