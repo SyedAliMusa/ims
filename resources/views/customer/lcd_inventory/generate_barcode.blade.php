@@ -95,9 +95,10 @@ if(isset($_GET['submit'])) {
                         <!--<p style="margin-bottom: -2px; "><b> {{ $band->name }} {{ $model }} {{$category }}</b></p>-->
                         <p style="margin-bottom: -2px;font-size:14px; "><b> {{ $model }} {{$category }}</b></p>
                             <?php
-                            echo DNS1D::getBarcodeSVG($random_no, "C39", 1, 25, '#2A3239');
+
+                            echo \Milon\Barcode\DNS1D::getBarcodeSVG($random_no, "C39", 1, 25, '#2A3239');
                             ?>
-                            <p style="margin-top: -2px;font-size:14px; "><b> {{ $random_no }} </b></p>
+                            <p style="margin-top: -2px;font-size:14px; "><b> {{ $random_no }}</b></p>
                     </div>
                 </td>
             </tr>

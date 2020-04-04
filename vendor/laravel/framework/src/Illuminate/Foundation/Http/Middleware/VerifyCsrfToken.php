@@ -3,17 +3,14 @@
 namespace Illuminate\Foundation\Http\Middleware;
 
 use Closure;
+use Carbon\Carbon;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\InteractsWithTime;
 use Symfony\Component\HttpFoundation\Cookie;
 use Illuminate\Contracts\Encryption\Encrypter;
 use Illuminate\Session\TokenMismatchException;
-use Illuminate\Cookie\Middleware\EncryptCookies;
 
 class VerifyCsrfToken
 {
-    use InteractsWithTime;
-
     /**
      * The application instance.
      *
@@ -105,7 +102,7 @@ class VerifyCsrfToken
                 $except = trim($except, '/');
             }
 
-            if ($request->fullUrlIs($except) || $request->is($except)) {
+            if ($request->is($except)) {
                 return true;
             }
         }
@@ -139,7 +136,7 @@ class VerifyCsrfToken
         $token = $request->input('_token') ?: $request->header('X-CSRF-TOKEN');
 
         if (! $token && $header = $request->header('X-XSRF-TOKEN')) {
-            $token = $this->encrypter->decrypt($header, static::serialized());
+            $token = $this->encrypter->decrypt($header);
         }
 
         return $token;
@@ -158,21 +155,11 @@ class VerifyCsrfToken
 
         $response->headers->setCookie(
             new Cookie(
-                'XSRF-TOKEN', $request->session()->token(), $this->availableAt(60 * $config['lifetime']),
-                $config['path'], $config['domain'], $config['secure'], false, false, $config['same_site'] ?? null
+                'XSRF-TOKEN', $request->session()->token(), Carbon::now()->getTimestamp() + 60 * $config['lifetime'],
+                $config['path'], $config['domain'], $config['secure'], false
             )
         );
 
         return $response;
-    }
-
-    /**
-     * Determine if the cookie contents should be serialized.
-     *
-     * @return bool
-     */
-    public static function serialized()
-    {
-        return EncryptCookies::serialized('XSRF-TOKEN');
     }
 }
