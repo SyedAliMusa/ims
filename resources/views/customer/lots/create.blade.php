@@ -137,6 +137,7 @@
     </div>
 @stop
 @push('scripts')
+
     <script src="{{asset('customer/assets/demo/default/custom/crud/forms/widgets/select2.js')}}" type="text/javascript"></script>
     <script>
         $(document).ready(function() {
@@ -152,6 +153,7 @@
                     type: "GET",
                     url: '{{route("get_asin_by__")}}?brand_id='+brand+'&model='+model+'&color='+color+'&network_id='+network+'&storage_id='+storage,
                     success: function (data) {
+
                         if (data.length >0) {
                             $('#append').html(' <select class="form-control" name="asin" required></select>')
                             $.each(data, function (index, value) {

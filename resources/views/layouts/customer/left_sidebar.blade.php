@@ -152,7 +152,7 @@
                             </div>
                         </li>
                     @else
-                    
+
                      @if (auth()->user()->account_type == 'tester')
                         <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
                             <a href="{{route('testing.release_phone_for_refurbisher')}}" class="m-menu__link m-menu__toggle">
@@ -161,7 +161,7 @@
                             </a>
                         </li>
                     @endif
-                    
+
                     @if (auth()->user()->account_type == 'refurbishing')
                         <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
                             <a href="{{route('lcd_inventory.lcd_profile')}}" class="m-menu__link m-menu__toggle">
@@ -181,7 +181,7 @@
                                 <span class="m-menu__link-text">Phone History</span>
                             </a>
                         </li>
-                       
+
                             {{--<li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
                                 <a href="{{route('lcd_inventory.issue_lcd')}}" class="m-menu__link m-menu__toggle">
                                     <i class="m-menu__link-icon flaticon-layers"></i>
@@ -237,6 +237,7 @@
                                     @endif
                                     @if(\App\UserPermissions::where('u_id','=', Auth::user()->id)->where('p_id','=', 18)->first())
                                         <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('report.colorfolder')}}" class="m-menu__link "><span class="m-menu__link-text">Color Folder Report</span></a></li>
+                                        <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('color')}}" class="m-menu__link "><span class="m-menu__link-text">Color Report</span></a></li>
                                         <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('report.tester')}}" class="m-menu__link "><span class="m-menu__link-text">Tester Report</span></a></li>
                                         <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('warehouse.create')}}" class="m-menu__link "><span class="m-menu__link-text">Release & Receive Report</span></a></li>
                                         <li class="m-menu__item " m-menu-link-redirect="1" aria-haspopup="true"><a href="{{route('report.attachIMEIWithLCD')}}" class="m-menu__link "><span class="m-menu__link-text">IMEI With LCD Report</span></a></li>
