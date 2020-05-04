@@ -116,7 +116,7 @@
                             </div>
                         </div>
                     @endif
-                    
+
                     <form action="{{route('testing.store')}}" method="post" class="form-horizontal"role="form" id="has_checkbox">
                         {{csrf_field()}}
 
@@ -448,16 +448,23 @@
                             </div>
                         @else
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group margin-0">
+                                        <div class="row">
+                                        <div class="col-md-6">
                                         <label for="usr">IMEI</label>
                                         <input type="text" class="form-control" autofocus name="imei" id="imei_id_val" onchange="getLotByimei()" oninput="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="15" value="" required>
-
-                                    <span id="return_date"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="usr">Folder Color</label>
+                                            <input type="text" class="form-control" id="color_folder" value="" disabled>
+                                        </div>
+                                            <span id="return_date"></span>
                                     <span id="return_message"></span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4"></div>
+                                <div class="col-md-2"></div>
                             </div>
                             <div class="row add_inventory">
 
@@ -844,6 +851,7 @@
                         $('input[id=storage]').val(data['storage'])
                         $('input[id=color]').val(data['color'])
                         $('input[id=category]').val(data['category'])
+                        $('input[id=color_folder]').val(data['color_folder'])
 
                         $('#return_date').val(data['return_date'])
                         $('#return_message').val(data['return_message'])
@@ -876,7 +884,7 @@
             $('#datepicker_to').datepicker({
                 uiLibrary: 'bootstrap'
             });
-            
+
             $('.oth').hide();
             $("input[type='checkbox']").on('click',function(){
                var x = $(this).val();
@@ -890,7 +898,7 @@
                     });
                }
             })
-            
+
         });
 
         var date= JSON.parse('<?php echo json_encode($date); ?>')

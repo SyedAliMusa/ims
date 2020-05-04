@@ -75,13 +75,13 @@ class TestingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-     
+
      public function release_phone_for_refurbisher(){
           $user = DB::table("users")->where('account_type','refurbishing')->get();
          return view('customer.testing.release_phone_for_refurbisher', compact('user'));
      }
-     
-     
+
+
     public function store(Request $request)
     {
         // dd($request);
@@ -155,12 +155,12 @@ class TestingController extends Controller
 
         $testing_id = array();
 //        $testing_ids = DB::select(DB::raw('SELECT * from testings WHERE inventory_id = :inv'), ['inv' => $testing_inv_id]);
-        $testing_ids = DB::select(DB::raw('SELECT t.id,t.category_id_old,t.created_at, t.returned, i.category_id, i.imei, u.name, l.model,ct.name as new_cat, ctt.name as old_cat from testings t 
-                                INNER JOIN inventories i on i.id = t.inventory_id INNER JOIN users u on u.id = t.created_by INNER JOIN lots l on l.id = i.lots_primary_key 
-                                INNER JOIN categories ct on ct.id = i.category_id INNER JOIN categories ctt ON ctt.id = t.category_id_old 
+        $testing_ids = DB::select(DB::raw('SELECT t.id,t.category_id_old,t.created_at, t.returned, i.category_id, i.imei, u.name, l.model,ct.name as new_cat, ctt.name as old_cat from testings t
+                                INNER JOIN inventories i on i.id = t.inventory_id INNER JOIN users u on u.id = t.created_by INNER JOIN lots l on l.id = i.lots_primary_key
+                                INNER JOIN categories ct on ct.id = i.category_id INNER JOIN categories ctt ON ctt.id = t.category_id_old
                                 WHERE t.inventory_id = :inv order by t.id DESC '), ['inv' => $testing_inv_id]);
 
-        $return = DB::select(DB::raw('select r.*,u.name from returns r inner join 
+        $return = DB::select(DB::raw('select r.*,u.name from returns r inner join
                                       users u on u.id = r.created_by where inventory_id = :inv'), ['inv' => $testing_inv_id]);
 //        $return = Returns::where('inventory_id','=',$testing_inv_id)->select('id')->orderByDesc('id')->first();
 //print_r($return);die;
@@ -242,9 +242,9 @@ class TestingController extends Controller
     public function testRecords(Request $request){
 
         if ($request->has('imei')){
-            $products = DB::select( DB::raw("SELECT u.name as user_name,t.created_at,c.name as cat_old_name, cc.name as cat_new_name FROM inventories i 
-                                   Inner join testings t ON i.id = t.inventory_id INNER JOIN categories c 
-                                   ON t.category_id_old = c.id INNER JOIN users u ON t.created_by = u.id 
+            $products = DB::select( DB::raw("SELECT u.name as user_name,t.created_at,c.name as cat_old_name, cc.name as cat_new_name FROM inventories i
+                                   Inner join testings t ON i.id = t.inventory_id INNER JOIN categories c
+                                   ON t.category_id_old = c.id INNER JOIN users u ON t.created_by = u.id
                                   inner join categories cc on cc.id = i.category_id
                                    WHERE i.imei = :imei order by created_at DESC "), array(
                 'imei' => $request->get('imei'),

@@ -167,6 +167,7 @@ class GeneralController extends Controller
                     'testing_id' => $has_in_testing->inventory_id,
                 ];
             } else {
+                $color_folder = WarehouseInOut::where('inventory_id','=', $inventory->id)->first();
                 $data = [
                     'brand' => $inventory->lot->brand->name,
                     'model' => $inventory->lot->model,
@@ -174,6 +175,7 @@ class GeneralController extends Controller
                     'color' => $inventory->lot->color,
                     'storage' => $inventory->lot->storage->name,
                     'category' => $inventory->category->name,
+                    'color_folder' => $color_folder->color_folder
                 ];
                 $return = Returns::where('inventory_id','=', $inventory->id)->orderByDesc('id')->first();
                 if ($return){
@@ -184,6 +186,7 @@ class GeneralController extends Controller
             }
         }
         else{
+//            dump($inventory);die;
             return 123456789;
         }
     }
@@ -512,7 +515,7 @@ class GeneralController extends Controller
         if ($inventory) {
             $dispatch_count = Dispatch::where('inventory_id', '=', $inventory->id)->get()->count();
             $return_data = DB::select(DB::raw('SELECT r.message,r.created_at, u.name, i.category_id from returns r INNER JOIN inventories i on i.id = r.inventory_id
-	                                          inner JOIN testings t on t.id = r.testing_id INNER JOIN users u on u.id = r.created_by 
+	                                          inner JOIN testings t on t.id = r.testing_id INNER JOIN users u on u.id = r.created_by
                                               where i.imei = :imei'),['imei' => $imei]);
 
           /*  $return_data = Returns::where('inventory_id', '=', $inventory->id)->get();
