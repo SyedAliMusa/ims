@@ -457,7 +457,9 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label for="usr">Folder Color</label>
-                                            <input type="text" class="form-control" id="color_folder" value="" disabled>
+                                            <h3 id="color_folder"></h3>
+
+                                            {{--                                            <input type="text" class="form-control" id="color_folder" value="" disabled>--}}
                                         </div>
                                             <span id="return_date"></span>
                                     <span id="return_message"></span>
@@ -844,17 +846,23 @@
                     }
                     else if(data['brand']) {
                         console.log(data)
+                        var base_url = window.location.origin;
 
+                        var single = '<button><a href="'+ base_url + '/reports/single-color?color='+ data['color_folder'] + '">'+data['color_folder']+'</a></button>'
+                        // alert(single)
                         $('input[id=brand]').val(data['brand'])
                         $('input[id=model]').val(data['model'])
                         $('input[id=network]').val(data['network'])
                         $('input[id=storage]').val(data['storage'])
                         $('input[id=color]').val(data['color'])
                         $('input[id=category]').val(data['category'])
-                        $('input[id=color_folder]').val(data['color_folder'])
+                        // $('input[id=color_folder]').val(single)
+                        // $("#color_folder").removeAttr("disabled");
+                        $("#color_folder").html(single);
 
                         $('#return_date').val(data['return_date'])
                         $('#return_message').val(data['return_message'])
+
                     }
                     else{
                         var timerInterval

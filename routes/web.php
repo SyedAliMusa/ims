@@ -44,6 +44,8 @@ Route::get('/reports/colors', function () {
     $results = [];
     return view('customer.reports.color', compact('results'));
 })->name('color');
+Route::get('/reports/single-color', 'ReportController@getsinglecolor')->name('single_color');
+Route::post('/reports/single-color', 'ReportController@getsinglecolor')->name('single_color');
 Route::get('/register', 'HomeController@getRegister')->name('register');
 Route::get('/users', 'HomeController@getUsers')->name('users.data');
 Route::post('/users/delete/{user_id}', 'HomeController@deleteUsers')->name('users.delete.id');
