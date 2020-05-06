@@ -75,6 +75,7 @@
                                 <tr>
                                     <td>{{$product->imei}}</td>
                                     <td>{{$product->color}}</td>
+                                    <td>{{$product->color_folder}}</td>
                                     @if($product->status != 0)
                                     <td>In Progress</td>
                                     @else
