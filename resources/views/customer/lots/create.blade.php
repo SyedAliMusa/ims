@@ -169,11 +169,12 @@
 
             $("#select_storage").on('change, click', function() {
 
-                var brand =  $('select[name=brand] :selected').text();
-                var network =  $('select[name=network] :selected').text();
-                var model =  $('select[name=model]').val();
-                var color =  $('input[name=color]').val();
-                var storage =  $('select[name=storage]').val();
+                $("input[name=color]").on('change, keyup', function() {
+                    var brand =  $('select[name=brand] :selected').val();
+                    var network =  $('select[name=network] :selected').val();
+                    var model =  $('select[name=model] :selected').val();
+                    var color =  $('input[name=color]').val();
+                    var storage =  $('select[name=storage] :selected').val();
 
                 console.log(brand +' '+network +' '+model +' '+color +' '+storage )
 
