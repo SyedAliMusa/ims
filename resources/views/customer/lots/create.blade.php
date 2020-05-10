@@ -71,14 +71,14 @@
                                 </div>
                                 <div class="form-group margin-0">
                                     <label for="pwd">Model</label>
-                                    <select class="form-control" id="m_select2_3" name="model"  required>
+                                    <select class="form-control" id="m_select2_3" name="model" onchange="setStorageValNull()" required>
                                         <option value="" selected></option>
                                         {{--<input type="text" class="form-control" name="model" id="" value="" oninput="this.value=this.value.replace(/[^0-9a-zA-Z-_]/g,'');" required>--}}
                                     </select>
                                 </div>
                                 <div class="form-group margin-0">
                                     <label for="usr">Network</label>
-                                    <select class="form-control" name="network" id="m_select2_2" required>
+                                    <select class="form-control" name="network" id="m_select2_2" onchange="setStorageValNull()" required>
                                         <option value="" selected></option>
                                         @foreach($networks as $brand)
                                             <option value="{{$brand->id}}">{{$brand->name}}</option>
@@ -89,14 +89,16 @@
                                 <!--<div class="col-md-4  offset-1">-->
                                 <div class="form-group margin-0">
                                     <label for="pwd">Color</label>
-                                    <input type="text" class="form-control" name="color" id=""  value="" oninput="this.value=this.value.replace(/[^a-zA-Z-_]/g,'');" required>
+                                    <input type="text" class="form-control" name="color" id="" onfocusin="setStorageValNull()" value="" oninput="this.value=this.value.replace(/[^a-zA-Z-_]/g,'');" required>
                                 </div>
                                 <div class="form-group margin-0">
                                     <label for="pwd">Storage</label>
                                     <select class="form-control" name="storage" id="select_storage" required>
                                         <option value="" selected></option>
                                         @foreach($storages as $brand)
-                                            <option value="{{$brand->id}}">{{$brand->name}}</option>
+                                            @if($brand->deleted != 1)
+                                                <option value="{{$brand->id}}">{{$brand->name}}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -169,9 +171,8 @@
 
             $("#select_storage").on('change, click', function() {
 
-                $("input[name=color]").on('change, keyup', function() {
-                    var brand =  $('select[name=brand] :selected').val();
-                    var network =  $('select[name=network] :selected').val();
+                    var brand =  $('select[name=brand] :selected').text();
+                    var network =  $('select[name=network] :selected').text();
                     var model =  $('select[name=model] :selected').val();
                     var color =  $('input[name=color]').val();
                     var storage =  $('select[name=storage] :selected').val();
@@ -197,6 +198,11 @@
             })
 
         } );
+
+        function setStorageValNull() {
+            $('select[name=storage]').val('');
+            $('#append').html('<input type="text" class="form-control" name="asin" value="" required>')
+        }
 
         function getModels(){
             $('select[name=model]').children('option:not(:first)').remove();
