@@ -452,32 +452,33 @@ class ReportController extends Controller
 
             if ($request->get('colors') != ''){
                 $color = $request->get('colors');
-                $results = DB::select(DB::raw('SELECT i.status as inv_status,w.color_folder, l.model as model, s.name as storage,p.status,
-                        l.color as color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date
-                        FROM warehouse_in_out w INNER JOIN inventories i on w.inventory_id = i.id INNER JOIN lots l on
-                        l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by INNER JOIN storages s on
-                        s.id = l.storage_id INNER JOIN categories c on c.id = i.category_id JOIN testings t on
-                        t.inventory_id = i.id JOIN problems p on p.testing_id = t.id where i.status = 1 AND w.created_at
+                $results = DB::select(DB::raw('SELECT i.status as inv_status,w.color_folder, l.model as model, s.name
+                        as storage,p.status, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to,
+                        w.created_at as c_date FROM warehouse_in_out w INNER JOIN inventories i on i.id = w.inventory_id
+                        INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
+                        INNER JOIN storages s on s.id = l.storage_id INNER JOIN categories c on c.id = i.category_id
+                        LEFT JOIN testings t on t.inventory_id = i.id LEFT JOIN problems p on p.testing_id = t.id where i.status = 1 AND w.created_at
                         BETWEEN :from AND :to  AND w.color_folder = :color GROUP by imei order by w.id DESC '),
                         ['from' => $from, 'to' => $to, 'color' => $color]);
             } else {
-                $results = DB::select(DB::raw('SELECT w.color_folder, l.model as model, s.name as storage,p.status, l.color as
-                        color, i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date, i.status as inv_status
-                        FROM warehouse_in_out w INNER JOIN inventories i on w.inventory_id = i.id
-	                    INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
+                $results = DB::select(DB::raw('SELECT i.status as inv_status,w.color_folder, l.model as model, s.name
+                        as storage,p.status, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to,
+                        w.created_at as c_date FROM warehouse_in_out w INNER JOIN inventories i on i.id = w.inventory_id
+                        INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
                         INNER JOIN storages s on s.id = l.storage_id INNER JOIN categories c on c.id = i.category_id
-                        JOIN testings t on t.inventory_id = i.id JOIN problems p on p.testing_id = t.id where i.status = 1
-                        AND w.created_at BETWEEN :from AND :to GROUP by imei order by w.id DESC '), ['from' => $from, 'to' => $to]);
+                        LEFT JOIN testings t on t.inventory_id = i.id LEFT JOIN problems p on p.testing_id = t.id
+                        where i.status = 1 AND w.created_at BETWEEN :from AND :to GROUP BY i.imei
+                        order by w.id DESC'), ['from' => $from, 'to' => $to]);
             }
         } else {
             $color = $request->get('colors');
-            $results = DB::select(DB::raw('SELECT w.color_folder, l.model as model, s.name as storage, l.color as color,
-                        i.imei as imei, c.name as cat_name, w.issued_to, w.created_at as c_date, p.status, i.status as inv_status
-                        FROM warehouse_in_out w INNER JOIN inventories i on w.inventory_id = i.id
-	                    INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
+            $results = DB::select(DB::raw('SELECT i.status as inv_status,w.color_folder, l.model as model, s.name
+                        as storage,p.status, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to,
+                        w.created_at as c_date FROM warehouse_in_out w INNER JOIN inventories i on i.id = w.inventory_id
+                        INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
                         INNER JOIN storages s on s.id = l.storage_id INNER JOIN categories c on c.id = i.category_id
-                        INNER JOIN testings t on t.inventory_id = i.id INNER JOIN problems p on p.testing_id = t.id
-                        where /*i.status = 1 AND */w.color_folder = :color GROUP by imei order by w.id DESC '), ['color' => $color]);
+                        LEFT JOIN testings t on t.inventory_id = i.id LEFT JOIN problems p on p.testing_id = t.id
+                        where i.status = 1 AND w.color_folder = :color GROUP by imei order by w.id DESC '), ['color' => $color]);
         }
         return view('customer.reports.color_folder', compact('results'));
     }
