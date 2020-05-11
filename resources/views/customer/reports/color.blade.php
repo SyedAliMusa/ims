@@ -89,9 +89,9 @@
                             @foreach($results as $product)
                                 <tr>
                                     @if($product->status == 1 )
-                                        <td>Tested</td>
-                                    @else
                                         <td>InProgress</td>
+                                    @else
+                                        <td>Dispatched</td>
                                     @endif
                                     <td>{{$product->imei}}</td>
                                     <td>{{$product->model}}</td>

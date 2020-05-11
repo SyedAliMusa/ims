@@ -86,10 +86,14 @@
                         <tbody>
                         @foreach($results as $product)
                             <tr>
-                                @if($product->status == 1 )
-                                    <td>Tested</td>
+                                @if($product->inv_status == 1)
+                                    @if($product->status == 1 )
+                                        <td>Tested</td>
+                                    @else
+                                        <td>InProgress</td>
+                                    @endif
                                 @else
-                                    <td>InProgress</td>
+                                    <td>Dispatched</td>
                                 @endif
                                 <td>{{$product->model}}</td>
                                 <td>{{$product->storage}}</td>
