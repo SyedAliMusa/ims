@@ -76,6 +76,7 @@
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
                             <tr>
+                                <th>Status</th>
                                 <th>Imei</th>
                                 <th>Model</th>
                                 <th>Storage</th>
@@ -87,6 +88,11 @@
                             <tbody>
                             @foreach($results as $product)
                                 <tr>
+                                    @if($product->status == 1 )
+                                        <td>Tested</td>
+                                    @else
+                                        <td>InProgress</td>
+                                    @endif
                                     <td>{{$product->imei}}</td>
                                     <td>{{$product->model}}</td>
                                     <td>{{$product->storage}}</td>
