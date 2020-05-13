@@ -452,7 +452,7 @@ class ReportController extends Controller
 
             if ($request->get('colors') != ''){
                 $color = $request->get('colors');
-                $results = DB::select(DB::raw('SELECT i.status as inv_status,w.color_folder, l.model as model, s.name
+                $results = DB::select(DB::raw('SELECT i.status as inv_status, t.id as testing_id,w.color_folder, l.model as model, s.name
                         as storage,p.status, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to,
                         w.created_at as c_date FROM warehouse_in_out w INNER JOIN inventories i on i.id = w.inventory_id
                         INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
@@ -461,7 +461,7 @@ class ReportController extends Controller
                         BETWEEN :from AND :to  AND w.color_folder = :color GROUP by imei order by w.id DESC '),
                         ['from' => $from, 'to' => $to, 'color' => $color]);
             } else {
-                $results = DB::select(DB::raw('SELECT i.status as inv_status,w.color_folder, l.model as model, s.name
+                $results = DB::select(DB::raw('SELECT i.status as inv_status, t.id as testing_id,w.color_folder, l.model as model, s.name
                         as storage,p.status, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to,
                         w.created_at as c_date FROM warehouse_in_out w INNER JOIN inventories i on i.id = w.inventory_id
                         INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
@@ -472,7 +472,7 @@ class ReportController extends Controller
             }
         } else {
             $color = $request->get('colors');
-            $results = DB::select(DB::raw('SELECT i.status as inv_status,w.color_folder, l.model as model, s.name
+            $results = DB::select(DB::raw('SELECT i.status as inv_status, t.id as testing_id,w.color_folder, l.model as model, s.name
                         as storage,p.status, l.color as color, i.imei as imei, c.name as cat_name, w.issued_to,
                         w.created_at as c_date FROM warehouse_in_out w INNER JOIN inventories i on i.id = w.inventory_id
                         INNER JOIN lots l on l.id = i.lots_primary_key INNER JOIN users u on u.id = i.created_by
