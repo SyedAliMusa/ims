@@ -62,6 +62,7 @@
                                         <option value="green">Green</option>
                                         <option value="pink">Pink</option>
                                         <option value="red">Red</option>
+                                        <option value="orange">Orange</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
