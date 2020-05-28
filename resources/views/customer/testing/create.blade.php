@@ -447,6 +447,82 @@
                                 </div>
                             </div>
                         @else
+
+
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <a href="/reports/colorbased?color=black">
+                                        <div style="position: relative; text-align: center; color: white;">
+                                            <img src="https://img.icons8.com/plasticine/100/000000/folder-invoices.png"/>
+                                            <div style="position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%); color: black">
+                                                <strong>Black</strong>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="/reports/colorbased?color=purple">
+                                        <div style="position: relative; text-align: center; color: white;">
+                                            <img src="https://img.icons8.com/plasticine/100/000000/folder-invoices.png"/>
+                                            <div style="position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%); color: purple">
+                                                <strong>Purple</strong>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="/reports/colorbased?color=blue">
+                                        <div style="position: relative; text-align: center; color: white;">
+                                            <img src="https://img.icons8.com/plasticine/100/000000/folder-invoices.png"/>
+                                            <div style="position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%); color: blue">
+                                                <strong>Blue</strong>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="/reports/colorbased?color=green">
+                                        <div style="position: relative; text-align: center; color: white;">
+                                            <img src="https://img.icons8.com/plasticine/100/000000/folder-invoices.png"/>
+                                            <div style="position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%); color: green">
+                                                <strong>Green</strong>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="/reports/colorbased?color=pink">
+                                        <div style="position: relative; text-align: center; color: white;">
+                                            <img src="https://img.icons8.com/plasticine/100/000000/folder-invoices.png"/>
+                                            <div style="position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%); color: deeppink">
+                                                <strong>Pink</strong>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="/reports/colorbased?color=red">
+                                        <div style="position: relative; text-align: center; color: white;">
+                                            <img src="https://img.icons8.com/plasticine/100/000000/folder-invoices.png"/>
+                                            <div style="position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%); color: red">
+                                                <strong>Red</strong>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="/reports/colorbased?color=orange">
+                                        <div style="position: relative; text-align: center; color: white;">
+                                            <img src="https://img.icons8.com/plasticine/100/000000/folder-invoices.png"/>
+                                            <div style="position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%); color: orangered">
+                                                <strong>Orange</strong>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group margin-0">
