@@ -23,6 +23,30 @@
             <div class="m-portlet m-portlet--mobile">
                 <div class="m-portlet__body">
                     <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-11">
+                            <form method="post" action="{{route('warehouse_in_out')}}" enctype="multipart/form-data" role="form" id="form_verify_imei" class="m--margin-5">
+                                {{csrf_field()}}
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <b class="text-primary">Please Upload Amazon Order List</b>
+                                        <input type="file" title="" class="form-control" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" name="file" autofocus autocomplete="off">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <b class="text-white">.</b>
+                                            <button type="submit" class="btn btn-primary form-control">Upload</button>
+
+                                        </div>
+                                    </div>
+                                    <small id="imei_exist" class="text-danger">{{session('fail')}}</small>
+                                    <small id="imei_exist" class="text-success">{{session('success')}}</small>
+                                    <small id="imei_exist" class="text-primary">{{session('already_verified')}}</small>
+                                </div>
+
+                            </form>
+                            </div>
                         {{--release--}}
                         @if (session('issued_to') or request()->input('release'))
                             <div class="col-md-12">
@@ -134,15 +158,15 @@
                                                     {{--<th>Brand</th>--}}
                                                     <th>Model</th>
                                                     {{--<th>Network</th>--}}
+                                                    <th>Network</th>
+                                                    <th>Storage</th>
                                                     <th>Color</th>
-                                                    <th>Imei</th>
-                                                    <th>Category</th>
                                                     {{--<th>Status</th>--}}
-                                                    <th>Issued To</th>
-                                                     <th>Name</th>
+                                                    <th>Category</th>
+{{--                                                     <th>Name</th>--}}
                                                     {{--<th>Added By</th>--}}
                                                     {{--<th>Date</th>--}}
-                                                    <th>Action</th>
+{{--                                                    <th>Action</th>--}}
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -151,32 +175,37 @@
                                                     <tr>
                                                         {{--                                                    <td>{{$product->inventory->lot->brand->name}}</td>--}}
                                                         {{--                                                    <td>{{$product->inventory->lot->network->name}}</td>--}}
-                                                        @if ($product->inventory->lot)
+                                                        {{--@if ($product->inventory->lot)
                                                             <td>{{$product->inventory->lot->model}}</td>
                                                             <td>{{$product->inventory->lot->color}}</td>
                                                             @else
                                                             <td></td>
                                                             <td></td>
-                                                        @endif
+                                                        @endif--}}
+                                                        <td>{{ $product->model }}</td>
+                                                        <td>{{ $product->network }}</td>
+                                                        <td>{{ $product->storage }}</td>
+                                                        <td>{{ $product->color }}</td>
+                                                        <td>{{ $product->category }}</td>
 
-                                                        <td>{{$product->inventory->imei}}</td>
-                                                        <td>{{$product->inventory->category->name}}</td>
+{{--                                                        <td>{{$product->inventory->imei}}</td>--}}
+{{--                                                        <td>{{$product->inventory->category->name}}</td>--}}
                                                         {{--<td>
                                                             <span class="m-badge  m-badge--info m-badge--wide">In Progress</span>
                                                         </td>--}}
-                                                        <td>{{$product->issued_to}}</td>
-                                                         <td>{{$product->Account}}</td>
+{{--                                                        <td>{{$product->issued_to}}</td>--}}
+{{--                                                         <td>{{$product->Account}}</td>--}}
                                                         {{--                                                    <td>{{$product->user->name}}</td>--}}
                                                         {{--                                                    <td title="{{$product->created_at}}">{{date('M-d-Y', strtotime($product->created_at))}}</td>--}}
-                                                        <td>
-                                                            <form action="{{URL::to('warehouse/' . $product->id)}}" method="post">
-                                                                {{csrf_field()}}
-                                                                <input type="hidden" name="_method" value="DELETE">
-                                                                <button type="submit"  onclick="return confirm('Are you sure?')"  class="btn btn-outline-danger btn-sm">
-                                                                    Delete
-                                                                </button>
-                                                            </form>
-                                                        </td>
+{{--                                                        <td>--}}
+{{--                                                            <form action="{{URL::to('warehouse/' . $product->id)}}" method="post">--}}
+{{--                                                                {{csrf_field()}}--}}
+{{--                                                                <input type="hidden" name="_method" value="DELETE">--}}
+{{--                                                                <button type="submit"  onclick="return confirm('Are you sure?')"  class="btn btn-outline-danger btn-sm">--}}
+{{--                                                                    Delete--}}
+{{--                                                                </button>--}}
+{{--                                                            </form>--}}
+{{--                                                        </td>--}}
                                                     </tr>
                                                 @endforeach
                                                 </tbody>

@@ -72,6 +72,7 @@ Route::resource("cataloge", "CatalogeController");
 Route::resource("category", "CategoryController");
 Route::get("red_flag", "WareHouseController@redFlag")->name('red_flag');
 Route::get("warehouse/in_out", "WareHouseController@warehouse_in_out")->name('warehouse_in_out');
+Route::post("warehouse/in_out", "WareHouseController@warehouse_in_out")->name('warehouse_in_out');
 Route::get("Search-Unlock-Codes", "WareHouseController@imei")->name('Search-Unlock-Codes');
 Route::post("getimei", "WareHouseController@getimei")->name('getimei');
 Route::post("storeimei", "WareHouseController@storeimei")->name('storeimei');
